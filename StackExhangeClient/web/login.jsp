@@ -1,7 +1,7 @@
 <%-- 
     Document   : login
     Created on : Nov 7, 2016, 12:32:00 PM
-    Author     : shirayuki97
+    Author     : user-BL
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -29,9 +29,6 @@
             </form>
 	</div>	
 	<br><br><br>
-	<p class="font-small"><strong>Don't have an account yet? Register <a href = "" class="link"> here </a></strong></p>
-        <br>
-        <br>
-        <br>
+	<p class="font-small"><strong>Don't have an account yet? Register <a href = "register.jsp" class="link"> here </a></strong></p>
 </body>
 </html>
