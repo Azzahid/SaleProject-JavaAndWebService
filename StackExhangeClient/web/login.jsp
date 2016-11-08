@@ -22,7 +22,7 @@
 	</div>
 	
 	<div>
-            <form method="POST" action="">
+            <form method="POST" action="http://localhost:8082/IdentityServices/LoginServlet">
                 <span class="font-small">Email or Username</span><br><input type="text" name="username" class="input-text">
                 <span class="font-small">Password</span><br><input type="password" name="password"  class="input-text"><br><br><br>
                 <input type="submit" value="LOGIN" name="login" class="float-right button">
