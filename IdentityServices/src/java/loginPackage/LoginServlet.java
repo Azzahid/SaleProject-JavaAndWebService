@@ -42,19 +42,18 @@ public class LoginServlet extends HttpServlet {
     public boolean validate(String uname, String pass){
         boolean st = true;
         try {
-           //loading drivers for mysql
-           Class.forName("com.mysql.jdbc.Driver");
-
-           //creating connection with the database 
-           Connection con=DriverManager.getConnection
-                          ("jdbc:mysql://localhost:3306/t2_akun","root","");
+            //creating connection with the database 
+           Connection con = DB.connect();
+           if(con == null)
+               return false;
+           
            PreparedStatement ps =con.prepareStatement
                           ("SELECT username,password FROM user WHERE username = ? AND password = ?;");
            ps.setString(1, uname);
            ps.setString(2, pass);
            ResultSet rs = ps.executeQuery();
            st = rs.next();
-        } catch(ClassNotFoundException | SQLException e) {
+        } catch( SQLException e) {
             System.out.println(e);
         }
         return st; 
