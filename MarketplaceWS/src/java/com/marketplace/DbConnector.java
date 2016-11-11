@@ -30,7 +30,7 @@ public class DbConnector {
         }
     }
     
-    public int getData(int productid){
+    public int getTotalLike(int productid){
         int count = -999;
         try{
             String query;
@@ -79,6 +79,88 @@ public class DbConnector {
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(rs.getBytes("photo_Url"));
                 es[i].setCreatedAt(rs.getDate("created_At"));
+                es[i].setImageType(rs.getString("image_Type"));
+                es[i].setImageName(rs.getString("image_Name"));
+                es[i].setUserId(rs.getInt("user_Id"));
+                i++;
+            }
+        }catch(Exception ex){
+            System.out.println("Result: "+ex);
+        }
+        
+        return es;
+    }
+    
+    public Integer getLikeStatus(int id, int productid){
+        Integer result = null;
+            
+            try{
+                String query;
+                int i = 0;
+                query = ("SELECT COUNT(*) AS total FROM user_like WHERE user_id = '"+id+"' AND barang_id = '"+productid+"'");
+                rs = st.executeQuery(query);
+                if(rs.next()){
+                    result = rs.getInt("total");
+                }else{
+                    return null;
+                }
+            }catch(Exception ex){
+                System.out.println("Result : "+ex);
+            }
+        
+        return result;
+    }
+    
+    public Integer getTotalPurchase(int id){
+        Integer result = null;
+            
+            try{
+                String query;
+                int i = 0;
+                query = ("SELECT COUNT(*) AS total FROM purchase WHERE product_id = '"+id+"'");
+                rs = st.executeQuery(query);
+                if(rs.next()){
+                    result = rs.getInt("total");
+                }else{
+                    return null;
+                }
+            }catch(Exception ex){
+                System.out.println("Result : "+ex);
+            }
+        
+        return result;
+    }
+    
+    public Product[] searchProduct(String text, Integer pilihan){
+        Product[] es = null;
+        String query;
+        String query1;
+        if(pilihan == 0){
+            query = ("SELECT COUNT(*) AS total FROM product WHERE namaProduk LIKE '%"+text+"%'");
+            query1 = ("SELECT * FROM product WHERE namaProduk LIKE '%"+text+"%' ORDER BY created_at DESC");
+        }else{
+            query = ("SELECT COUNT(*) AS total FROM product WHERE user_id LIKE '%"+text+"%'");
+            query1 = ("SELECT * FROM product WHERE user_id LIKE '%"+text+"%' ORDER BY created_at DESC");
+        }
+        try{
+            int count;
+            int i = 0;
+            rs = st.executeQuery(query);
+            if(rs.next()){
+                count = rs.getInt("total");
+            }else{
+                return null;
+            }
+            es = new Product[count];
+            rs = st.executeQuery(query1);
+            while(rs.next()){
+                es[i] = new Product();
+                es[i].setPId(rs.getInt("p_id"));
+                es[i].setNamaProduk(rs.getString("namaProduk"));
+                es[i].setDescription(rs.getString("description"));
+                es[i].setPrice(rs.getString("price"));
+                es[i].setPhotoUrl(rs.getBytes("photo_Url"));
+                es[i].setCreatedAt(rs.getDate("created_at"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));

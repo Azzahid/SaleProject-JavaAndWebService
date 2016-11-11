@@ -19,8 +19,8 @@ public class TestMain {
      */
     public static void main(String[] args) throws SQLException {
         DbConnector con = new DbConnector();
-        int a = con.getData(13);
-        Product[] es = con.getProduct();
+        int a = con.getTotalLike(13);
+        Product[] es = con.searchProduct("poke", 0);
         int i;
         System.out.println(es.length);
         for(i = 0; i<es.length;i++){

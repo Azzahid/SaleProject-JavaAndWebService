@@ -35,7 +35,7 @@ public class marketplace {
     public int getLike(@WebParam(name = "productid") int productid) {
         //TODO write your implementation code here:
         DbConnector connect = new DbConnector();
-        int like = connect.getData(productid);
+        int like = connect.getTotalLike(productid);
         return like;
     }
 
@@ -52,5 +52,42 @@ public class marketplace {
             return null;
         }
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getLikeStatus")
+    public Integer getLikeStatus(@WebParam(name = "productid") int productid, @WebParam(name = "userid") int userid) {
+        Integer result = null;
+        DbConnector con = new DbConnector();
+        result = con.getLikeStatus(userid, productid);
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getTotalPurchase")
+    public Integer getTotalPurchase(@WebParam(name = "id") int id) {
+        Integer result = null;
+        DbConnector con = new DbConnector();
+        result = con.getTotalPurchase(id);
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "searchProduct")
+    public Product[] searchProduct(@WebParam(name = "text") String text, @WebParam(name = "option") int option) {
+        Product[] result = null;
+        DbConnector con = new DbConnector();
+        if ((result = con.searchProduct(text,option)) != null) {
+            return result;
+        }else{
+            return null;
+        }
+    }
+    
     
 }
