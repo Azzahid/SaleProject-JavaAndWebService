@@ -4,7 +4,48 @@
     Author     : user-BL
 --%>
 
+<%@page import="java.io.PrintWriter"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.net.HttpURLConnection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%  
+    String user = request.getParameter("username");
+    String pass = request.getParameter("password");
+    String error = "";
+    if(user != null && pass != null && !user.equals("") && !pass.equals("")){
+        String url = "http://localhost:8082/IdentityServices/LoginServlet";
+        URL iurl = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection)iurl.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+        // Send POST output.
+        connection.setRequestMethod("POST");
+        java.io.DataOutputStream printout = new java.io.DataOutputStream(connection.getOutputStream ());
+        String content = "username=" + user + "&password=" + pass;
+        printout.writeBytes (content);
+        printout.flush (); 
+        printout.close ();
+        
+        // retrieve response from IS
+        java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
+            (java.io.InputStream) connection.getContent()));
+        String line,token;
+
+        while ((line = reader.readLine()) != null) {
+            out.println(line + "<br>");
+            int index = line.indexOf("token");
+            if (index != -1) {
+                token = line.substring(9);
+            }
+        }
+    } else if(user != null && pass != null && (user.equals("") || pass.equals(""))){
+        // handle empty form or incomplete form 
+        error = "Please enter username and password !";
+    }
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,13 +63,14 @@
 	</div>
 	
 	<div>
-            <form method="POST" action="http://localhost:8082/IdentityServices/LoginServlet">
+            <form method="POST" action="login.jsp">
                 <span class="font-small">Email or Username</span><br><input type="text" name="username" class="input-text">
-                <span class="font-small">Password</span><br><input type="password" name="password"  class="input-text"><br><br><br>
+                <span class="font-small">Password</span><br><input type="password" name="password"  class="input-text"><br><br>
+                <strong style="color:red;"><%out.println(error);%></strong><br>
                 <input type="submit" value="LOGIN" name="login" class="float-right button">
             </form>
 	</div>	
 	<br><br><br>
 	<p class="font-small"><strong>Don't have an account yet? Register <a href = "register.jsp" class="link"> here </a></strong></p>
-</body>
+    </body>
 </html>

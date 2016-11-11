@@ -13,8 +13,8 @@ import java.lang.*;
  * @author user
  */
 public class DB {
-    private static String username="CHANGEME";
-    private static String password="CHANGEME";
+    private static String username="root";
+    private static String password="";
     /* Adjust the above two as per the username
     * password combination of your MySql databse */
 
