@@ -7,3 +7,5 @@
 /StackExchangeWS/nbproject/private/
 /IdentityServices/nbproject/private/
 /IdentityServices/build/
+/IdentityServices/nbproject/project.properties
+/IdentityServices/src/java/loginPackage/DB.java
