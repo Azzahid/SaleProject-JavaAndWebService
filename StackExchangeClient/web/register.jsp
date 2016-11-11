@@ -4,7 +4,59 @@
     Author     : shirayuki97
 --%>
 
+<%@page import="java.io.PrintWriter"%>
+<%@page import="java.net.URL"%>
+<%@page import="java.net.HttpURLConnection"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%  
+    String full_name = request.getParameter("full_name");
+    String username = request.getParameter("username");
+    String email = request.getParameter("email");
+    String pass = request.getParameter("pass");
+    String confirm_pass = request.getParameter("confirm_pass");
+    String full_address = request.getParameter("full_address");
+    String postal_code = request.getParameter("postal_code");
+    String phone_number = request.getParameter("phone_number");
+    
+    String error = "";
+    
+    if("POST".equalsIgnoreCase(request.getMethod())) {
+        
+        String url = "http://localhost:8082/IdentityServices/RegisterServlet";
+        URL iurl = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection)iurl.openConnection();
+        connection.setDoOutput(true);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+        // Send POST output.
+        connection.setRequestMethod("POST");
+        java.io.DataOutputStream printout = new java.io.DataOutputStream(connection.getOutputStream ());
+        String content = "full_name=" + full_name 
+                + "&username=" + username
+                + "&email=" + email
+                + "&pass=" + pass
+                + "&full_address=" + full_address
+                + "&postal_code=" + postal_code
+                + "&phone_number=" + phone_number;
+        printout.writeBytes (content);
+        printout.flush (); 
+        printout.close ();
+
+        // retrieve response from IS
+        java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
+            (java.io.InputStream) connection.getContent()));
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            out.println(line + "<br>");
+        }
+
+        error = "POST!";
+    }
+    
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,7 +71,7 @@
         <div class = "border-bottom ">
             <h2>Please register</h2>
         </div>
-        <form method="POST" action="" id="register" name="register">
+        <form method="POST" action="register.jsp" id="register" name="register">
             <div>
                 <label for="full_name">Full Name</label><br />
                 <input type="text" name="full_name" class="input-text">
@@ -41,8 +93,8 @@
                 <input type="password" name="confirm_pass" class="input-text">
             </div>
             <div>
-                <label for="full_adress">Full Address</label><br />
-                <textarea name="full_adress" rows="5" cols="50" class="input-textarea"></textarea>
+                <label for="full_address">Full Address</label><br />
+                <textarea name="full_address" rows="5" cols="50" class="input-textarea"></textarea>
             </div>
             <div>
                 <label for="postal_code">Postal Code</label><br />
@@ -52,6 +104,8 @@
                 <label for="phone_number">Phone Number</label><br />
                 <input type="text" name="phone_number" class="input-text">
             </div>
+            <strong style="color:red;"><%out.println(error);%></strong><br>
+            <input type="submit" value="REGISTER" name="registerr" class="float-right button">
             <div>
                 <input type="button" value="REGISTER" name="registerr" onclick="validateform();" class="button float-right">
             </div>

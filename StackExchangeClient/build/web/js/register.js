@@ -4,7 +4,7 @@ function validateform() {
 	var email = document.forms["register"]["email"].value;
 	var pass = document.forms["register"]["pass"].value;
 	var cpass = document.forms["register"]["confirm_pass"].value;
-	var fulladr = document.forms["register"]["full_adress"].value;
+	var fulladr = document.forms["register"]["full_address"].value;
 	var postalcode = document.forms["register"]["postal_code"].value;
 	var phone = document.forms["register"]["phone_number"].value;
 	var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

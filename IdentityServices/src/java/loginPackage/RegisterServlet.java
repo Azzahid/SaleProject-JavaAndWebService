@@ -101,33 +101,39 @@ public class RegisterServlet extends HttpServlet {
             out.println("<body>");
             out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
             out.println("<p>Message: " + message + "</p>");
+            out.println("<p>Message: " + full_name + "</p>");
+            out.println("<p>Message: " + username + "</p>");
+            out.println("<p>Message: " + email + "</p>");
+            out.println("<p>Message: " + pass + "</p>");
+            out.println("<p>Message: " + full_address + "</p>");
+            out.println("<p>Message: " + postal_code + "</p>");
+            out.println("<p>Message: " + phone_number + "</p>");
             out.println("</body>");
             out.println("</html>");
         }
     }
     
     public boolean register(String full_name, String username, String email, String pass, String full_address, String postal_code, String phone_number) {
-        boolean success = false;
-        try {
-            //creating connection with the database 
-           Connection con = DB.connect();
-           if(con == null)
-               return false;
-           
-           PreparedStatement ps =con.prepareStatement
-                          ("INSERT INTO user (fullname, username, email, password, address, postalcode, phonenumber) "
-                                  + "VALUES(?, ?, ?, ?, ?, ?, ?)");
-           ps.setString(1, full_name);
-           ps.setString(2, username);
-           ps.setString(3, email);
-           ps.setString(4, pass);
-           ps.setString(5, full_address);
-           ps.setString(6, postal_code);
-           ps.setString(7, phone_number);
-           ResultSet rs = ps.executeQuery();
-           success = rs.next();
-        } catch( SQLException e) {
-            System.out.println(e);
+        boolean success = true;
+        try
+        {
+          Connection conn = DB.connect();
+
+          Statement st = conn.createStatement();
+
+          LoginServlet l = new LoginServlet();
+          String token = l.getToken();
+          Timestamp now = new Timestamp(new java.util.Date().getTime());
+          st.executeUpdate("INSERT INTO user (fullname, username, email, password, address, postalcode, phonenumber, Token, createAt) "
+              +"VALUES ('"+full_name+"', '"+username+"', '"+email+"', '"+pass+"', '"+full_address+"', '"+postal_code+"', '"+phone_number+"', '"+token+"', '"+now+"')");
+
+          conn.close();
+        }
+        catch (Exception e)
+        {
+          success = false;
+          System.err.println("Got an exception!");
+          System.err.println(e.getMessage());
         }
         return success;
     }
