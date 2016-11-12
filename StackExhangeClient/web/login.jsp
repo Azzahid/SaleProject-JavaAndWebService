@@ -7,6 +7,7 @@
 <%@page import="java.io.PrintWriter"%>
 <%@page import="java.net.URL"%>
 <%@page import="java.net.HttpURLConnection"%>
+<%@page language="java" session="true" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%  
@@ -72,5 +73,6 @@
 	</div>	
 	<br><br><br>
 	<p class="font-small"><strong>Don't have an account yet? Register <a href = "register.jsp" class="link"> here </a></strong></p>
+        Welcome <%=session.getAttribute("token")%>
     </body>
 </html>
