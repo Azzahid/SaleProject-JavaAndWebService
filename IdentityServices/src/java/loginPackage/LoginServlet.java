@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.Random;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,12 +32,11 @@ public class LoginServlet extends HttpServlet {
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
-        if(user != null && pass != null){
+        if(user != null && pass != null && !user.equals("") && !pass.equals("")){
             try {
                 //creating connection with the database 
                 Connection con = DB.connect();
@@ -48,8 +48,8 @@ public class LoginServlet extends HttpServlet {
                 if(rs.next()){ 
                     // user exist
                     String token = getToken();
-                    out.println(token);
-                    session.setAttribute("token",token);
+                    Cookie x = new Cookie("token",token);
+                    response.addCookie(x);
                 } else {
                     // user doesn't exist
                     out.println("tidak ada");

@@ -13,6 +13,8 @@
     String user = request.getParameter("username");
     String pass = request.getParameter("password");
     String error = "";
+    Cookie[] cookies = request.getCookies();
+    
     if(user != null && pass != null && !user.equals("") && !pass.equals("")){
         String url = "http://localhost:8082/IdentityServices/LoginServlet";
         URL iurl = new URL(url);
@@ -29,17 +31,9 @@
         printout.close ();
         
         // retrieve response from IS
-        java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
-            (java.io.InputStream) connection.getContent()));
-        String line,token;
-
-        while ((line = reader.readLine()) != null) {
-            out.println(line + "<br>");
-            int index = line.indexOf("token");
-            if (index != -1) {
-                token = line.substring(9);
-            }
-        }
+        out.println(cookies[0].getValue());
+        response.sendRedirect("http://localhost:8080/StackExchangeClient/catalog.jsp");
+        
     } else if(user != null && pass != null && (user.equals("") || pass.equals(""))){
         // handle empty form or incomplete form 
         error = "Please enter username and password !";
