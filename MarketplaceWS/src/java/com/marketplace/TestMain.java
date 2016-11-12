@@ -22,9 +22,15 @@ public class TestMain {
         int a = con.getTotalLike(13);
         Product[] es = con.searchProduct("poke", 0);
         int i;
-        System.out.println(es.length);
-        for(i = 0; i<es.length;i++){
-            System.out.println(es[i].getNamaProduk());
+        Purchase[] ex = con.getProductPurchase(7, 1);
+        Purchase[] eb = con.getProductPurchase(7,2);
+        System.out.println("Purchase = "+ex.length);
+        for(i=0;i<ex.length;i++){
+            System.out.println(i+" = "+ex[i].getProductName());
+        }
+        System.out.println("Sales = "+eb.length);
+        for(i=0;i<eb.length;i++){
+            System.out.println(eb[i].getProductName());
         }
         System.out.println(a);
     }

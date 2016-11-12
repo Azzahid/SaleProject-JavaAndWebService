@@ -5,6 +5,7 @@
  */
 package com.marketplace;
 
+import java.sql.SQLException;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -32,7 +33,7 @@ public class marketplace {
      * @return 
      */
     @WebMethod(operationName = "getLike")
-    public int getLike(@WebParam(name = "productid") int productid) {
+    public int getLike(@WebParam(name = "productid") int productid) throws SQLException {
         //TODO write your implementation code here:
         DbConnector connect = new DbConnector();
         int like = connect.getTotalLike(productid);
@@ -43,7 +44,7 @@ public class marketplace {
      * Web service operation
      */
     @WebMethod(operationName = "getAllProduct")
-    public Product[] getAllProduct() {
+    public Product[] getAllProduct() throws SQLException {
         Product[] result = null;
         DbConnector con = new DbConnector();
         if((result = con.getProduct())!=null){
@@ -87,6 +88,41 @@ public class marketplace {
         }else{
             return null;
         }
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getProductPurchase")
+    public Purchase[] getProductPurchase(@WebParam(name = "userid") int userid) {
+        Purchase[] result;
+        DbConnector con = new DbConnector();
+        result =con.getProductPurchase(userid, 1);
+        
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getProductSales")
+    public Purchase[] getProductSales(@WebParam(name = "userid") int userid) {
+        Purchase[] result;
+        DbConnector con = new DbConnector();
+        result = con.getProductPurchase(userid, 0);
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "operation")
+    public Byte[] getPhoto(@WebParam(name = "id") int id, @WebParam(name="pilihan") int pilihan) {
+        Byte[] photo = null;
+        DbConnector con = new DbConnector();
+//        photo = con.getPhoto(id, pilihan);
+        
+        return null;
     }
     
     

@@ -1,3 +1,7 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@ page session="true" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.marketplace.*" %>
 <!DOCTYPE html>
@@ -10,6 +14,8 @@
         <link rel="stylesheet" type ="text/css" href="css/header.css">
         <link rel="stylesheet" type ="text/css" href="css/products.css">
     </head>
+    <%  String token=(String)session.getAttribute("token");
+        out.println(token); %>
     <body class="body-center helvetica">
         <jsp:include page="header.jsp" />
         <!-- bar question -->
@@ -51,15 +57,18 @@
                 result = port.getAllProduct();
             }
             if(result != null && result.size()>0){
+                SimpleDateFormat ft = new SimpleDateFormat("E, dd M yyyy");
+                SimpleDateFormat tt = new SimpleDateFormat("HH.mm");
                 for(int i =0; i<result.size();i++){
                     Product temp = result.get(i);
+                    Date datetemp = temp.getCreatedAt().toGregorianCalendar().getTime();
                     int totallike = port.getLike(temp.getPId());
                     int status = port.getLikeStatus(temp.getPId(), 7);
                     int totalpurchase = port.getTotalPurchase(temp.getPId());
                     out.print("<div class = 'product'>");
                             out.print("<div>"
-                                    +   "<div class='product-date'>"+temp.getUserId().toString()+"</div>");
-                                    out.print("<div class='product-time'>added this on "+temp.getCreatedAt().toString()+"</div>"
+                                    +   "<div class='product-date'>"+ft.format(datetemp)+"</div>");
+                                    out.print("<div class='product-time'>added this on "+tt.format(datetemp)+"</div>"
                                     + "</div>");
                             out.print("<img src=''"+"' alt='product-image' width='100px' height='100px'>");
                             out.print("<div class = 'product-center-description'>"
@@ -100,6 +109,8 @@
         } catch (Exception ex) {
             out.println("Result = "+ex);
         }
+        Cookie[] cookie = request.getCookies();
+        out.println(cookie[0].getValue());
     %>
     <%-- end web service invocation --%><hr/>
 
