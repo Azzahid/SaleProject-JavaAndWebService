@@ -105,7 +105,6 @@
                 <input type="text" name="phone_number" class="input-text">
             </div>
             <strong style="color:red;"><%out.println(error);%></strong><br>
-            <input type="submit" value="REGISTER" name="registerr" class="float-right button">
             <div>
                 <input type="button" value="REGISTER" name="registerr" onclick="validateform();" class="button float-right">
             </div>

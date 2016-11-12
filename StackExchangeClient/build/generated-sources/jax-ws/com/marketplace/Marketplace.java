@@ -27,21 +27,6 @@ public interface Marketplace {
 
     /**
      * 
-     * @param name
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "hello", targetNamespace = "http://marketplace.com/", className = "com.marketplace.Hello")
-    @ResponseWrapper(localName = "helloResponse", targetNamespace = "http://marketplace.com/", className = "com.marketplace.HelloResponse")
-    @Action(input = "http://marketplace.com/marketplace/helloRequest", output = "http://marketplace.com/marketplace/helloResponse")
-    public String hello(
-        @WebParam(name = "name", targetNamespace = "")
-        String name);
-
-    /**
-     * 
      * @param productid
      * @return
      *     returns int
@@ -69,21 +54,21 @@ public interface Marketplace {
 
     /**
      * 
-     * @param text
-     * @param option
+     * @param productid
+     * @param userid
      * @return
-     *     returns java.util.List<com.marketplace.Product>
+     *     returns java.lang.Integer
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "searchProduct", targetNamespace = "http://marketplace.com/", className = "com.marketplace.SearchProduct")
-    @ResponseWrapper(localName = "searchProductResponse", targetNamespace = "http://marketplace.com/", className = "com.marketplace.SearchProductResponse")
-    @Action(input = "http://marketplace.com/marketplace/searchProductRequest", output = "http://marketplace.com/marketplace/searchProductResponse")
-    public List<Product> searchProduct(
-        @WebParam(name = "text", targetNamespace = "")
-        String text,
-        @WebParam(name = "option", targetNamespace = "")
-        int option);
+    @RequestWrapper(localName = "getLikeStatus", targetNamespace = "http://marketplace.com/", className = "com.marketplace.GetLikeStatus")
+    @ResponseWrapper(localName = "getLikeStatusResponse", targetNamespace = "http://marketplace.com/", className = "com.marketplace.GetLikeStatusResponse")
+    @Action(input = "http://marketplace.com/marketplace/getLikeStatusRequest", output = "http://marketplace.com/marketplace/getLikeStatusResponse")
+    public Integer getLikeStatus(
+        @WebParam(name = "productid", targetNamespace = "")
+        int productid,
+        @WebParam(name = "userid", targetNamespace = "")
+        int userid);
 
     /**
      * 
@@ -102,20 +87,35 @@ public interface Marketplace {
 
     /**
      * 
-     * @param productid
-     * @param userid
+     * @param text
+     * @param option
      * @return
-     *     returns java.lang.Integer
+     *     returns java.util.List<com.marketplace.Product>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getLikeStatus", targetNamespace = "http://marketplace.com/", className = "com.marketplace.GetLikeStatus")
-    @ResponseWrapper(localName = "getLikeStatusResponse", targetNamespace = "http://marketplace.com/", className = "com.marketplace.GetLikeStatusResponse")
-    @Action(input = "http://marketplace.com/marketplace/getLikeStatusRequest", output = "http://marketplace.com/marketplace/getLikeStatusResponse")
-    public Integer getLikeStatus(
-        @WebParam(name = "productid", targetNamespace = "")
-        int productid,
-        @WebParam(name = "userid", targetNamespace = "")
-        int userid);
+    @RequestWrapper(localName = "searchProduct", targetNamespace = "http://marketplace.com/", className = "com.marketplace.SearchProduct")
+    @ResponseWrapper(localName = "searchProductResponse", targetNamespace = "http://marketplace.com/", className = "com.marketplace.SearchProductResponse")
+    @Action(input = "http://marketplace.com/marketplace/searchProductRequest", output = "http://marketplace.com/marketplace/searchProductResponse")
+    public List<Product> searchProduct(
+        @WebParam(name = "text", targetNamespace = "")
+        String text,
+        @WebParam(name = "option", targetNamespace = "")
+        int option);
+
+    /**
+     * 
+     * @param name
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "hello", targetNamespace = "http://marketplace.com/", className = "com.marketplace.Hello")
+    @ResponseWrapper(localName = "helloResponse", targetNamespace = "http://marketplace.com/", className = "com.marketplace.HelloResponse")
+    @Action(input = "http://marketplace.com/marketplace/helloRequest", output = "http://marketplace.com/marketplace/helloResponse")
+    public String hello(
+        @WebParam(name = "name", targetNamespace = "")
+        String name);
 
 }

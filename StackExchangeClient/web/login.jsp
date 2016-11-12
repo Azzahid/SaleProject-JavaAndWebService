@@ -33,7 +33,6 @@
         // retrieve response from IS
         out.println(cookies[0].getValue());
         response.sendRedirect("http://localhost:8080/StackExchangeClient/catalog.jsp");
-        
     } else if(user != null && pass != null && (user.equals("") || pass.equals(""))){
         // handle empty form or incomplete form 
         error = "Please enter username and password !";

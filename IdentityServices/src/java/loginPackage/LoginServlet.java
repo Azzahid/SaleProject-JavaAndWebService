@@ -10,18 +10,14 @@ import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.Random;
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import java.sql.Timestamp;
+import java.util.Date;
 /**
  *
  * @author user-BL
@@ -37,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
         if(user != null && pass != null && !user.equals("") && !pass.equals("")){
+            Cookie x = null;
             try {
                 //creating connection with the database 
                 Connection con = DB.connect();
@@ -46,9 +43,14 @@ public class LoginServlet extends HttpServlet {
                 ps.setString(2, pass);
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()){ 
-                    // user exist
+                    // user exist, generate token
                     String token = getToken();
-                    Cookie x = new Cookie("token",token);
+                    x = new Cookie("token",token);
+
+                    // insert token and time created
+                    insertTokenDB(token,user);
+                    
+                    // send cookie
                     response.addCookie(x);
                 } else {
                     // user doesn't exist
@@ -65,5 +67,18 @@ public class LoginServlet extends HttpServlet {
         String token = new BigInteger(130, random).toString(32);
         
         return token;
+    }
+    
+    public void insertTokenDB(String token, String username) throws SQLException{
+        try {
+            Connection con = DB.connect();
+            Timestamp now = new Timestamp(new Date().getTime());
+            Statement newPS = con.createStatement();
+            newPS.executeUpdate("UPDATE user SET Token='"+token+"' ,createAt='"+now+"' WHERE username ='"+username+"'");
+            con.close();
+        } catch(Exception e) {
+            System.err.println("Got an login exception!");
+            System.err.println(e.getMessage());
+        }
     }
 }

@@ -4,12 +4,6 @@
 <xsd:import namespace="http://marketplace.com/" schemaLocation="http://localhost:8081/MarketplaceWS/marketplace?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
 <message name="getLike">
 <part name="parameters" element="tns:getLike"/>
 </message>
@@ -22,11 +16,11 @@
 <message name="getAllProductResponse">
 <part name="parameters" element="tns:getAllProductResponse"/>
 </message>
-<message name="searchProduct">
-<part name="parameters" element="tns:searchProduct"/>
+<message name="getLikeStatus">
+<part name="parameters" element="tns:getLikeStatus"/>
 </message>
-<message name="searchProductResponse">
-<part name="parameters" element="tns:searchProductResponse"/>
+<message name="getLikeStatusResponse">
+<part name="parameters" element="tns:getLikeStatusResponse"/>
 </message>
 <message name="getTotalPurchase">
 <part name="parameters" element="tns:getTotalPurchase"/>
@@ -34,17 +28,19 @@
 <message name="getTotalPurchaseResponse">
 <part name="parameters" element="tns:getTotalPurchaseResponse"/>
 </message>
-<message name="getLikeStatus">
-<part name="parameters" element="tns:getLikeStatus"/>
+<message name="searchProduct">
+<part name="parameters" element="tns:searchProduct"/>
 </message>
-<message name="getLikeStatusResponse">
-<part name="parameters" element="tns:getLikeStatusResponse"/>
+<message name="searchProductResponse">
+<part name="parameters" element="tns:searchProductResponse"/>
+</message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
 </message>
 <portType name="marketplace">
-<operation name="hello">
-<input wsam:Action="http://marketplace.com/marketplace/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://marketplace.com/marketplace/helloResponse" message="tns:helloResponse"/>
-</operation>
 <operation name="getLike">
 <input wsam:Action="http://marketplace.com/marketplace/getLikeRequest" message="tns:getLike"/>
 <output wsam:Action="http://marketplace.com/marketplace/getLikeResponse" message="tns:getLikeResponse"/>
@@ -53,30 +49,25 @@
 <input wsam:Action="http://marketplace.com/marketplace/getAllProductRequest" message="tns:getAllProduct"/>
 <output wsam:Action="http://marketplace.com/marketplace/getAllProductResponse" message="tns:getAllProductResponse"/>
 </operation>
-<operation name="searchProduct">
-<input wsam:Action="http://marketplace.com/marketplace/searchProductRequest" message="tns:searchProduct"/>
-<output wsam:Action="http://marketplace.com/marketplace/searchProductResponse" message="tns:searchProductResponse"/>
+<operation name="getLikeStatus">
+<input wsam:Action="http://marketplace.com/marketplace/getLikeStatusRequest" message="tns:getLikeStatus"/>
+<output wsam:Action="http://marketplace.com/marketplace/getLikeStatusResponse" message="tns:getLikeStatusResponse"/>
 </operation>
 <operation name="getTotalPurchase">
 <input wsam:Action="http://marketplace.com/marketplace/getTotalPurchaseRequest" message="tns:getTotalPurchase"/>
 <output wsam:Action="http://marketplace.com/marketplace/getTotalPurchaseResponse" message="tns:getTotalPurchaseResponse"/>
 </operation>
-<operation name="getLikeStatus">
-<input wsam:Action="http://marketplace.com/marketplace/getLikeStatusRequest" message="tns:getLikeStatus"/>
-<output wsam:Action="http://marketplace.com/marketplace/getLikeStatusResponse" message="tns:getLikeStatusResponse"/>
+<operation name="searchProduct">
+<input wsam:Action="http://marketplace.com/marketplace/searchProductRequest" message="tns:searchProduct"/>
+<output wsam:Action="http://marketplace.com/marketplace/searchProductResponse" message="tns:searchProductResponse"/>
+</operation>
+<operation name="hello">
+<input wsam:Action="http://marketplace.com/marketplace/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://marketplace.com/marketplace/helloResponse" message="tns:helloResponse"/>
 </operation>
 </portType>
 <binding name="marketplacePortBinding" type="tns:marketplace">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="getLike">
 <soap:operation soapAction=""/>
 <input>
@@ -95,7 +86,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="searchProduct">
+<operation name="getLikeStatus">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -113,7 +104,16 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="getLikeStatus">
+<operation name="searchProduct">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

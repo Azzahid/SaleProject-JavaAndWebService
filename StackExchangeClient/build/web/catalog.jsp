@@ -98,7 +98,7 @@
                 out.print("Product Not Found");
             }
         } catch (Exception ex) {
-            // TODO handle custom exceptions here
+            out.println("Result = "+ex);
         }
     %>
     <%-- end web service invocation --%><hr/>
