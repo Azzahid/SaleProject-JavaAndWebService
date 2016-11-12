@@ -32,7 +32,9 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
-        if(user != null && pass != null && !user.equals("") && !pass.equals("")){
+        String token = "";
+        String message = "";
+        /*if(user != null && pass != null && !user.equals("") && !pass.equals("")){
             try {
                 //creating connection with the database 
                 Connection con = DB.connect();
@@ -43,18 +45,32 @@ public class LoginServlet extends HttpServlet {
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()){ 
                     // user exist, generate token
-                    String token = getToken();
-                    String username = rs.getString("username");
-                    int uid = rs.getInt("id");
-                    response.sendRedirect("http://localhost:8080/StackExchangeClient/dummy?"+"token="+token+"&"+"uname="+username+"&"+"userid="+uid);
+                    token = getToken();
+                    message = "successfull";
                 } else {
                     // user doesn't exist
-                    out.println("tidak ada");
+                    message = "failed";
+                    response.sendError(0, message);
                 }
+                response.addHeader("token", token);
+                response.addHeader("message",message);
+                response.flushBuffer();
             } catch( SQLException e) {
                 System.out.println(e);
             }
+        }*/
+        
+        if(isUserExist(user, pass)) {
+            message = "Login Successful";
+            token = getToken();
+            response.addHeader("username", user);
+        } else {
+            message = "Login Failed : User not exist !";
+            response.sendError(0, message);
         }
+        response.addHeader("token", token);
+        response.addHeader("message",message);
+        response.flushBuffer();
     }
     
     public String getToken(){
@@ -75,5 +91,28 @@ public class LoginServlet extends HttpServlet {
             System.err.println("Got an login exception!");
             System.err.println(e.getMessage());
         }
+    }
+    
+    public boolean isUserExist(String username, String pass) {
+        try
+        {
+          Connection conn = DB.connect();
+
+          Statement st = conn.createStatement();
+            // Check if username / email exist
+            String query = "SELECT * FROM user WHERE username = '"+username+"' AND password = '"+pass+"'";
+            ResultSet result = st.executeQuery(query);
+            if (result.next() == true) {
+                return true;
+            }
+            conn.close();
+            return false;
+        }
+        catch (Exception e)
+        {
+          System.err.println("Got an exception!");
+          System.err.println(e.getMessage());
+        }
+        return false;
     }
 }
