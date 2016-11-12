@@ -118,11 +118,11 @@ public class marketplace {
      */
     @WebMethod(operationName = "operation")
     public Byte[] getPhoto(@WebParam(name = "id") int id, @WebParam(name="pilihan") int pilihan) {
-        Bytep[] photo = null;
+        Byte[] photo = null;
         DbConnector con = new DbConnector();
-        photo = con.getPhoto(id, pilihan);
+//        photo = con.getPhoto(id, pilihan);
         
-        return photo;
+        return null;
     }
     
     

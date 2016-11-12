@@ -83,39 +83,51 @@ public class RegisterServlet extends HttpServlet {
         String phone_number = request.getParameter("phone_number");
         response.setContentType("text/html;charset=UTF-8");
         
-        // check if user already exists
-        if(isUserExist(username, email)) {
-            
-        }
+        
         
         // register new user
         String message = "";
-        if(register(full_name, username, email, pass, full_address, postal_code, phone_number)) {
-            message = "Registration success";
+        String token = "";
+        // check if user already exists
+        if(isUserExist(username, email)) {
+            message = "Registration failed: User already exists";
+            response.sendError(0, message);
         }
-        else {  // registration failed
-            message = "Registration failed";
+        else {
+            token = register(full_name, username, email, pass, full_address, postal_code, phone_number);
+            if(token != null) {
+                message = "Registration success"+token;
+            }
+            else {  // registration failed
+                message = "Registration failed";
+                response.sendError(0, message);
+            }
         }
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet RegisterServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
-            out.println("<p>Message: " + message + "</p>");
-            out.println("<p>Message: " + full_name + "</p>");
-            out.println("<p>Message: " + username + "</p>");
-            out.println("<p>Message: " + email + "</p>");
-            out.println("<p>Message: " + pass + "</p>");
-            out.println("<p>Message: " + full_address + "</p>");
-            out.println("<p>Message: " + postal_code + "</p>");
-            out.println("<p>Message: " + phone_number + "</p>");
-            out.println("</body>");
-            out.println("</html>");
-        }
+        
+        response.addHeader("message", message);
+        response.addHeader("token", token);
+        response.flushBuffer();
+        
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet RegisterServlet</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath() + "</h1>");
+//            out.println("<p>Message: " + message + "</p>");
+//            out.println("<p>Message: " + full_name + "</p>");
+//            out.println("<p>Message: " + username + "</p>");
+//            out.println("<p>Message: " + email + "</p>");
+//            out.println("<p>Message: " + pass + "</p>");
+//            out.println("<p>Message: " + full_address + "</p>");
+//            out.println("<p>Message: " + postal_code + "</p>");
+//            out.println("<p>Message: " + phone_number + "</p>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
     }
     
     public boolean isUserExist(String username, String email) {
@@ -141,8 +153,8 @@ public class RegisterServlet extends HttpServlet {
         return false;
     }
     
-    public boolean register(String full_name, String username, String email, String pass, String full_address, String postal_code, String phone_number) {
-        boolean success = true;
+    public String register(String full_name, String username, String email, String pass, String full_address, String postal_code, String phone_number) {
+        String token = null;
         try
         {
           Connection conn = DB.connect();
@@ -150,20 +162,19 @@ public class RegisterServlet extends HttpServlet {
           Statement st = conn.createStatement();
 
           LoginServlet l = new LoginServlet();
-          String token = l.getToken();
+          token = l.getToken();
           Timestamp now = new Timestamp(new java.util.Date().getTime());
           st.executeUpdate("INSERT INTO user (fullname, username, email, password, address, postalcode, phonenumber, Token, createAt) "
               +"VALUES ('"+full_name+"', '"+username+"', '"+email+"', '"+pass+"', '"+full_address+"', '"+postal_code+"', '"+phone_number+"', '"+token+"', '"+now+"')");
-
           conn.close();
         }
         catch (Exception e)
         {
-          success = false;
+          token = null;
           System.err.println("Got an exception!");
           System.err.println(e.getMessage());
         }
-        return success;
+        return token;
     }
 
     /**

@@ -1,5 +1,7 @@
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
+<%@ page session="true" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.marketplace.*" %>
 <!DOCTYPE html>
@@ -12,6 +14,8 @@
         <link rel="stylesheet" type ="text/css" href="css/header.css">
         <link rel="stylesheet" type ="text/css" href="css/products.css">
     </head>
+    <%  String token=(String)session.getAttribute("token");
+        out.println(token); %>
     <body class="body-center helvetica">
         <jsp:include page="header.jsp" />
         <!-- bar question -->

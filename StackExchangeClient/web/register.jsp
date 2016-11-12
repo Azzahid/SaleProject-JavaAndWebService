@@ -47,12 +47,25 @@
         java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
             (java.io.InputStream) connection.getContent()));
         String line;
-
-        while ((line = reader.readLine()) != null) {
-            out.println(line + "<br>");
+        
+        if(connection.getResponseMessage().contains("failed")) {
+            error = connection.getResponseMessage();
         }
+        else {
+            String token = connection.getHeaderField("token");
+            session.setAttribute("token", token);
+            response.sendRedirect("catalog.jsp");
+        }
+        
+        
+        
+        
 
-        error = "POST!";
+//        while ((line = reader.readLine()) != null) {
+//            out.println(line + "<br>");
+//        }
+
+        
     }
     
 %>
