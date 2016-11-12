@@ -83,6 +83,11 @@ public class RegisterServlet extends HttpServlet {
         String phone_number = request.getParameter("phone_number");
         response.setContentType("text/html;charset=UTF-8");
         
+        // check if user already exists
+        if(isUserExist(username, email)) {
+            
+        }
+        
         // register new user
         String message = "";
         if(register(full_name, username, email, pass, full_address, postal_code, phone_number)) {
@@ -111,6 +116,29 @@ public class RegisterServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
         }
+    }
+    
+    public boolean isUserExist(String username, String email) {
+        try
+        {
+          Connection conn = DB.connect();
+
+          Statement st = conn.createStatement();
+            // Check if username / email exist
+            String query = "SELECT * FROM user WHERE username = '"+username+"' OR email = '"+email+"'";
+            ResultSet result = st.executeQuery(query);
+            if (result.next() == true) {
+                return true;
+            }
+            conn.close();
+            return false;
+        }
+        catch (Exception e)
+        {
+          System.err.println("Got an exception!");
+          System.err.println(e.getMessage());
+        }
+        return false;
     }
     
     public boolean register(String full_name, String username, String email, String pass, String full_address, String postal_code, String phone_number) {
