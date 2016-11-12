@@ -42,11 +42,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByPhonenumber", query = "SELECT u FROM User u WHERE u.phonenumber = :phonenumber")})
 public class User implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "buyerId")
-    private Collection<Purchase> purchaseCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sellerId")
-    private Collection<Purchase> purchaseCollection1;
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -206,24 +201,6 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.marketplace.User[ id=" + id + " ]";
-    }
-
-    @XmlTransient
-    public Collection<Purchase> getPurchaseCollection() {
-        return purchaseCollection;
-    }
-
-    public void setPurchaseCollection(Collection<Purchase> purchaseCollection) {
-        this.purchaseCollection = purchaseCollection;
-    }
-
-    @XmlTransient
-    public Collection<Purchase> getPurchaseCollection1() {
-        return purchaseCollection1;
-    }
-
-    public void setPurchaseCollection1(Collection<Purchase> purchaseCollection1) {
-        this.purchaseCollection1 = purchaseCollection1;
     }
     
 }
