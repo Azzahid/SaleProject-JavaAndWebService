@@ -13,7 +13,6 @@
     String user = request.getParameter("username");
     String pass = request.getParameter("password");
     String error = "";
-    Cookie[] cookies = request.getCookies();
     
     if(user != null && pass != null && !user.equals("") && !pass.equals("")){
         String url = "http://localhost:8082/IdentityServices/LoginServlet";
@@ -67,7 +66,7 @@
 	</div>
 	
 	<div>
-            <form method="POST" action="dummy.jsp">
+            <form method="POST" action="login.jsp">
                 <span class="font-small">Email or Username</span><br><input type="text" name="username" class="input-text">
                 <span class="font-small">Password</span><br><input type="password" name="password"  class="input-text"><br><br>
                 <strong style="color:red;"><%out.println(error);%></strong><br>
@@ -76,7 +75,8 @@
 	</div>	
 	<br><br><br>
 	<p class="font-small"><strong>Don't have an account yet? Register <a href = "register.jsp" class="link"> here </a></strong></p>
-        Hello <b><%= request.getParameter("username") %></b>!
+        <!-- for debugging -->
+        Hello <b><%= request.getParameter("uname") %></b>!
         Hello <b><%= request.getParameter("token") %></b>!
         Hello <b><%= request.getParameter("userid") %></b>!
     </body>

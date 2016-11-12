@@ -15,9 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.*;
 import java.util.Random;
-import javax.servlet.http.Cookie;
 import java.sql.Timestamp;
 import java.util.Date;
+import javax.servlet.RequestDispatcher;
 /**
  *
  * @author user-BL
@@ -46,8 +46,7 @@ public class LoginServlet extends HttpServlet {
                     String token = getToken();
                     String username = rs.getString("username");
                     int uid = rs.getInt("id");
-                    response.sendRedirect("http://localhost:8080/StackExchangeClient/dummy.jsp?"+
-                            "token="+token+"&"+"uname="+username+"&"+"userid="+uid);
+                    response.sendRedirect("http://localhost:8080/StackExchangeClient/dummy?"+"token="+token+"&"+"uname="+username+"&"+"userid="+uid);
                 } else {
                     // user doesn't exist
                     out.println("tidak ada");
