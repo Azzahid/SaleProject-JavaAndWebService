@@ -1,3 +1,5 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.marketplace.*" %>
 <!DOCTYPE html>
@@ -51,15 +53,18 @@
                 result = port.getAllProduct();
             }
             if(result != null && result.size()>0){
+                SimpleDateFormat ft = new SimpleDateFormat("E, dd M yyyy");
+                SimpleDateFormat tt = new SimpleDateFormat("HH.mm");
                 for(int i =0; i<result.size();i++){
                     Product temp = result.get(i);
+                    Date datetemp = temp.getCreatedAt().toGregorianCalendar().getTime();
                     int totallike = port.getLike(temp.getPId());
                     int status = port.getLikeStatus(temp.getPId(), 7);
                     int totalpurchase = port.getTotalPurchase(temp.getPId());
                     out.print("<div class = 'product'>");
                             out.print("<div>"
-                                    +   "<div class='product-date'>"+temp.getUserId().toString()+"</div>");
-                                    out.print("<div class='product-time'>added this on "+temp.getCreatedAt().toString()+"</div>"
+                                    +   "<div class='product-date'>"+ft.format(datetemp)+"</div>");
+                                    out.print("<div class='product-time'>added this on "+tt.format(datetemp)+"</div>"
                                     + "</div>");
                             out.print("<img src=''"+"' alt='product-image' width='100px' height='100px'>");
                             out.print("<div class = 'product-center-description'>"
@@ -98,8 +103,10 @@
                 out.print("Product Not Found");
             }
         } catch (Exception ex) {
-            // TODO handle custom exceptions here
+            out.println("Result = "+ex);
         }
+        Cookie[] cookie = request.getCookies();
+        out.println(cookie[0].getValue());
     %>
     <%-- end web service invocation --%><hr/>
 
