@@ -33,25 +33,21 @@ public class LoginServlet extends HttpServlet {
         String user = request.getParameter("username");
         String pass = request.getParameter("password");
         if(user != null && pass != null && !user.equals("") && !pass.equals("")){
-            Cookie x = null;
             try {
                 //creating connection with the database 
                 Connection con = DB.connect();
                 PreparedStatement ps =con.prepareStatement
-                              ("SELECT username,password FROM user WHERE username = ? AND password = ?;");
+                              ("SELECT * FROM user WHERE username = ? AND password = ?;");
                 ps.setString(1, user);
                 ps.setString(2, pass);
                 ResultSet rs = ps.executeQuery();
                 if(rs.next()){ 
                     // user exist, generate token
                     String token = getToken();
-                    x = new Cookie("token",token);
-
-                    // insert token and time created
-                    insertTokenDB(token,user);
-                    
-                    // send cookie
-                    response.addCookie(x);
+                    String username = rs.getString("username");
+                    int uid = rs.getInt("id");
+                    response.sendRedirect("http://localhost:8080/StackExchangeClient/dummy.jsp?"+
+                            "token="+token+"&"+"uname="+username+"&"+"userid="+uid);
                 } else {
                     // user doesn't exist
                     out.println("tidak ada");
