@@ -58,6 +58,9 @@ public class DbConnector {
             }else{
                 return null;
             }
+            if(count==0){
+                return null;
+            }
             es = new Product[count];
             query = ("SELECT * FROM product");
             rs = st.executeQuery(query);
@@ -151,6 +154,9 @@ public class DbConnector {
             }else{
                 return null;
             }
+            if(count==0){
+                return null;
+            }
             es = new Product[count];
             rs = st.executeQuery(query1);
             while(rs.next()){
@@ -172,4 +178,60 @@ public class DbConnector {
         
         return es;
     }
+    
+    public Purchase[] getProductPurchase(Integer userid, Integer pilihan){
+        Purchase[] es = null;
+        String query;
+        String query1;
+        if(pilihan  == 1){
+            query = ("SELECT COUNT(*) AS total FROM purchase WHERE purchase.buyer_id = '"+userid+"'");
+            query1 = ("SELECT * FROM purchase WHERE purchase.buyer_id = '"+userid+"' ORDER BY created_at DESC");
+        }else{
+            query = ("SELECT COUNT(*) AS total FROM purchase WHERE purchase.seller_id = '"+userid+"'");
+            query1 = ("SELECT * FROM purchase WHERE purchase.seller_id = '"+userid+"' ORDER BY created_at DESC");
+        }
+        try{
+            int count;
+            int i = 0;
+            rs = st.executeQuery(query);
+            if(rs.next()){
+                count = rs.getInt("total");
+            }else{
+                return null;
+            }
+            if(count==0){
+                return null;
+            }
+            es = new Purchase[count];
+            rs = st.executeQuery(query1);
+            while (rs.next()) {
+                /*private Integer purchaseId;
+            */
+                es[i] = new Purchase();
+                es[i].setPurchaseId(rs.getInt("purchase_id"));
+                es[i].setBuyerId(rs.getInt("buyer_id"));
+                es[i].setProductId(rs.getInt("product_id"));
+                es[i].setConsignee("consignee");
+                es[i].setFulladdress(rs.getString("fulladdress"));
+                es[i].setQuantity(rs.getInt(6));
+                es[i].setCreditcardnumber(rs.getString(7));
+                es[i].setPostalcode(rs.getString(8));
+                es[i].setPhonenumber(rs.getString(9));
+                es[i].setCreatedAt(rs.getDate(10));
+                es[i].setCardVerification(rs.getString(11));
+                es[i].setProductName(rs.getString(12));
+                es[i].setProductDescription(rs.getString(13));
+                es[i].setProductPrice(rs.getString(14));
+                es[i].setProductPhotourl(rs.getBytes(15));
+                es[i].setSellerId(rs.getInt(16));
+                es[i].setImageType(rs.getString(17));
+                i++;
+            }
+        } catch (SQLException ex) {
+            System.out.println("Result: "+ex);
+        }
+        
+        return es;
+    }
+    
 }

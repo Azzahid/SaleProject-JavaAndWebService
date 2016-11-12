@@ -88,6 +88,29 @@ public class marketplace {
             return null;
         }
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getProductPurchase")
+    public Purchase[] getProductPurchase(@WebParam(name = "userid") int userid) {
+        Purchase[] result;
+        DbConnector con = new DbConnector();
+        result =con.getProductPurchase(userid, 1);
+        
+        return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getProductSales")
+    public Purchase[] getProductSales(@WebParam(name = "userid") int userid) {
+        Purchase[] result;
+        DbConnector con = new DbConnector();
+        result = con.getProductPurchase(userid, 0);
+        return result;
+    }
     
     
 }
