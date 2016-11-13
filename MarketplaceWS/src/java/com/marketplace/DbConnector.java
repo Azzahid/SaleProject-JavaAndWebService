@@ -5,8 +5,10 @@
  */
 package com.marketplace;
 
+import java.io.ByteArrayInputStream;
 import java.sql.*;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -302,13 +304,13 @@ public class DbConnector {
             String postalcode,
             String phonenumber, 
             String card_verification
-            ) {
+            ) throws SQLException {
         
         String query1;
         String product_name = null;
         String product_description = null;
         String product_price = null;
-        byte[] product_photourl = null;
+        Blob product_photourl = null;
         int seller_id = 0;
         String image_type = null;
         query1 = ("SELECT * FROM product WHERE p_id = '"+product_id+"'");
@@ -318,30 +320,51 @@ public class DbConnector {
                 product_name = rs.getString("namaProduk");
                 product_description = rs.getString("description");
                 product_price = rs.getString("price");
-                product_photourl =  rs.getBytes("photo_url");
+                product_photourl =  rs.getBlob("photo_url");
                 seller_id = rs.getInt("user_id");
                 image_type = rs.getString("image_type");
             }
+            
         }catch(Exception ex){
             System.out.println("Error :" +ex);
         }
-        Timestamp now = new Timestamp(new java.util.Date().getTime());
-        String query2 = "INSERT INTO purchase (buyer_id, product_id, consignee, "
-                + "fulladdress, quantity, creditcardnumber, postalcode, "
-                + "phonenumber, created_at, card_verification, product_name, "
-                + "product_description, product_price, product_photourl, seller_id, "
-                + "image_type) VALUES ('"+buyer_id+"', '"+product_id+"', '"+consignee+"', "
-                + "'"+fulladdress+"', '"+quantity+"', '"+creditcardnumber+"', '"+postalcode+"', "
-                + "'"+phonenumber+"', '"+now+"', '"+card_verification+"', '"+product_name+"', "
-                + "'"+product_description+"', '"+product_price+"', '"+product_photourl+"', '"+seller_id+"', '"+image_type+"')";
         
-        try {
-            st.executeUpdate(query2);
-            con.close();
-        } catch (SQLException ex) {
-            System.out.println("Error2 :" +ex);
-            return false;
-        }
+        Timestamp now = new Timestamp(new java.util.Date().getTime());
+        PreparedStatement ps;
+               
+        
+        String query2= null;
+        query2 = "INSERT INTO purchase (buyer_id, product_id, consignee, fulladdress, "
+                + "quantity, creditcardnumber, postalcode, phonenumber, created_at, card_verification, "
+                + "product_name, product_description, product_price, product_photourl, seller_id, image_type) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        ps = con.prepareStatement(query2);
+        ps.setInt(1, buyer_id);
+        ps.setInt(2, product_id);
+        ps.setString(3, consignee);
+        ps.setString(4, fulladdress);
+        ps.setInt(5, quantity);
+        ps.setString(6, creditcardnumber);
+        ps.setString(7, postalcode);
+        ps.setString(8, phonenumber);
+        ps.setTimestamp(9, now);
+        ps.setString(10, card_verification);
+        ps.setString(11, product_name);
+        ps.setString(12, product_description);
+        ps.setString(13, product_price);
+        ps.setBlob(14, product_photourl);
+        ps.setInt(15, seller_id);
+        ps.setString(16, image_type);
+        ps.execute();
+        ps.close();
+        
+//        try {
+//            st.executeUpdate(query2);
+//            con.close();
+//        } catch (SQLException ex) {
+//            System.out.println("Error2 :" +ex);
+//            return false;
+//        }
         
         return true;
     }

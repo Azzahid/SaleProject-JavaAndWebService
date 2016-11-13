@@ -14,7 +14,7 @@ import java.lang.*;
  */
 public class DB {
     private static String username="root";
-    private static String password="";
+    private static String password="ladrangotoma";
     /* Adjust the above two as per the username
     * password combination of your MySql databse */
 
