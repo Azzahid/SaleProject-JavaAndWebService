@@ -27,7 +27,6 @@ import javax.servlet.RequestDispatcher;
 
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    public static String userid;
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -78,7 +77,6 @@ public class LoginServlet extends HttpServlet {
         }
         response.addHeader("token", token);
         response.addHeader("message",message);
-        response.addHeader("userid",userid);
         response.flushBuffer();
     }
     
@@ -111,7 +109,6 @@ public class LoginServlet extends HttpServlet {
             // Check if username / email exist
             String query = "SELECT * FROM user WHERE username = '"+username+"' AND password = '"+pass+"'";
             ResultSet result = st.executeQuery(query);
-            userid = result.getString("id");
             if (result.next() == true) {
                 return true;
             }

@@ -107,8 +107,6 @@
         } catch (Exception ex) {
             out.println("Result = "+ex);
         }
-        Cookie[] cookie = request.getCookies();
-        out.println(cookie[0].getValue());
     %>
     <%-- end web service invocation --%><hr/>
 

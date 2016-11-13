@@ -3,7 +3,7 @@
     <h1><span class="color-red">Sale</span><span class="color-blue">Project</span></h1>
 </div>
 <p class="text-align-right">Hi, <%=session.getAttribute("username")%><br />
-<a href="login.jsp" class="link color-red">logout</a></p>
+<a href="logout.jsp" class="link color-red">logout</a></p>
 <div>
     <ul>
         <li><a href="catalog.jsp"><span>Catalog</span></a></li>
