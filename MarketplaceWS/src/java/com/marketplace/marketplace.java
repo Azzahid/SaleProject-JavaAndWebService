@@ -137,6 +137,33 @@ public class marketplace {
         con.close();
         return photo;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "confirmPurchase")
+    public Boolean confirmPurchase(@WebParam(name = "buyer_id") int buyer_id,
+            @WebParam(name = "product_id") int product_id,
+            @WebParam(name = "consignee") String consignee,
+            @WebParam(name = "fulladdress") String fulladdress,
+            @WebParam(name = "quantity") int quantity,
+            @WebParam(name = "creditcardnumber") String creditcardnumber,
+            @WebParam(name = "postalcode") String postalcode,
+            @WebParam(name = "phonenumber") String phonenumber,
+            @WebParam(name = "card_verification") String card_verification            
+            ) {
+        //TODO write your implementation code here:
+        DbConnector con = new DbConnector();
+        return con.confirmPurchase(buyer_id, 
+            product_id, 
+            consignee,
+            fulladdress, 
+            quantity, 
+            creditcardnumber, 
+            postalcode,
+            phonenumber, 
+            card_verification);
+    }
     
     
 }

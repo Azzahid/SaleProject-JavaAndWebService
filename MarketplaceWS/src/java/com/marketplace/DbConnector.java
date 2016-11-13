@@ -5,8 +5,12 @@
  */
 package com.marketplace;
 
-import java.sql.*;
+import com.mysql.jdbc.*;
 import java.io.InputStream;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,7 +27,7 @@ public class DbConnector {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "myPassword");
             st = (Statement) con.createStatement();
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println("Error "+ ex);
@@ -289,6 +293,59 @@ public class DbConnector {
         return result;
     }
     
+    public boolean confirmPurchase(int buyer_id, 
+            int product_id, 
+            String consignee,
+            String fulladdress, 
+            int quantity, 
+            String creditcardnumber, 
+            String postalcode,
+            String phonenumber, 
+            String card_verification
+            ) {
+        
+        String query1;
+        String product_name = null;
+        String product_description = null;
+        String product_price = null;
+        byte[] product_photourl = null;
+        int seller_id = 0;
+        String image_type = null;
+        query1 = ("SELECT * FROM product WHERE p_id = '"+product_id+"'");
+        try{
+            rs = st.executeQuery(query1);
+            if (rs.next()) {
+                product_name = rs.getString("namaProduk");
+                product_description = rs.getString("description");
+                product_price = rs.getString("price");
+                product_photourl =  rs.getBytes("photo_url");
+                seller_id = rs.getInt("user_id");
+                image_type = rs.getString("image_type");
+            }
+        }catch(Exception ex){
+            System.out.println("Error :" +ex);
+        }
+        Timestamp now = new Timestamp(new java.util.Date().getTime());
+        String query2 = "INSERT INTO purchase (buyer_id, product_id, consignee, "
+                + "fulladdress, quantity, creditcardnumber, postalcode, "
+                + "phonenumber, created_at, card_verification, product_name, "
+                + "product_description, product_price, product_photourl, seller_id, "
+                + "image_type) VALUES ('"+buyer_id+"', '"+product_id+"', '"+consignee+"', "
+                + "'"+fulladdress+"', '"+quantity+"', '"+creditcardnumber+"', '"+postalcode+"', "
+                + "'"+phonenumber+"', '"+now+"', '"+card_verification+"', '"+product_name+"', "
+                + "'"+product_description+"', '"+product_price+"', '"+product_photourl+"', '"+seller_id+"', '"+image_type+"')";
+        
+        try {
+            st.executeUpdate(query2);
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Error2 :" +ex);
+            return false;
+        }
+        
+        return true;
+    }
+    
     public void close(){
         try {
             rs.close();
@@ -298,5 +355,4 @@ public class DbConnector {
             Logger.getLogger(DbConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 }
