@@ -115,7 +115,6 @@ public class marketplace {
     /**
      * Web service operation
      */
-<<<<<<< HEAD
     @WebMethod(operationName = "getPhoto")
     public Product getPhoto(@WebParam(name = "id") int id) {
         Product photo;
@@ -133,15 +132,6 @@ public class marketplace {
         DbConnector con = new DbConnector();
         photo = con.getPhotoPurchase(id);
         return photo;
-=======
-    @WebMethod(operationName = "operation")
-    public Byte[] getPhoto(@WebParam(name = "id") int id, @WebParam(name="pilihan") int pilihan) {
-        Byte[] photo = null;
-        DbConnector con = new DbConnector();
-//        photo = con.getPhoto(id, pilihan);
-        
-        return null;
->>>>>>> 5f162a759d9d09bed570d47220e59a055d42829b
     }
     
     
