@@ -386,6 +386,22 @@ public class DbConnector {
         return result;
     }
     
+    public boolean addProduct(String productname,String description,String price,String imageblob, String userid, String image_type, String image_name){
+        String query1;
+        Timestamp now = new Timestamp(new java.util.Date().getTime());
+        query1 = "INSERT INTO product (namaProduk,description,price,photo_url,create_at,user_id,image_type,image_name)" +
+                "VALUES ('"+productname+"', '"+description+"', '"+price+"', "
+                + "'"+imageblob+"', '"+now+"', '"+userid+"', '"+image_type+"', '"+image_name+"')";
+        try {
+            st.executeUpdate(query1);
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Error2 :" +ex);
+            return false;
+        }
+        
+        return true;
+    }
     
     public void close(){
         try {
