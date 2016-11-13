@@ -5,6 +5,8 @@
  */
 package com.marketplace;
 
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.sql.SQLException;
 
 /**
@@ -32,6 +34,16 @@ public class TestMain {
         for(i=0;i<eb.length;i++){
             System.out.println(eb[i].getProductName());
         }
+        
+        Purchase test = con.getPhotoPurchase(5);
+        Product test2 = con.getPhotoProduct(17);
+        
+        InputStream ax;
+        ax = test.getProductPhotourl().getBinaryStream();
+        
+        System.out.println(test.getProductPhotourl().toString());
+        System.out.println(test2.getPhotoUrl().toString());
+        
         System.out.println(a);
     }
     

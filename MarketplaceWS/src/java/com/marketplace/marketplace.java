@@ -5,7 +5,6 @@
  */
 package com.marketplace;
 
-import java.sql.SQLException;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -33,7 +32,7 @@ public class marketplace {
      * @return 
      */
     @WebMethod(operationName = "getLike")
-    public int getLike(@WebParam(name = "productid") int productid) throws SQLException {
+    public int getLike(@WebParam(name = "productid") int productid) {
         //TODO write your implementation code here:
         DbConnector connect = new DbConnector();
         int like = connect.getTotalLike(productid);
@@ -44,7 +43,7 @@ public class marketplace {
      * Web service operation
      */
     @WebMethod(operationName = "getAllProduct")
-    public Product[] getAllProduct() throws SQLException {
+    public Product[] getAllProduct() {
         Product[] result = null;
         DbConnector con = new DbConnector();
         if((result = con.getProduct())!=null){
@@ -116,12 +115,22 @@ public class marketplace {
     /**
      * Web service operation
      */
-    @WebMethod(operationName = "operation")
-    public Byte[] getPhoto(@WebParam(name = "id") int id, @WebParam(name="pilihan") int pilihan) {
-        Bytep[] photo = null;
+    @WebMethod(operationName = "getPhoto")
+    public Product getPhoto(@WebParam(name = "id") int id) {
+        Product photo;
         DbConnector con = new DbConnector();
-        photo = con.getPhoto(id, pilihan);
-        
+        photo = con.getPhotoProduct(id);
+        return photo;
+    }
+    
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getPhotoPurchase")
+    public Purchase getPhotoPurchase(@WebParam(name = "id") int id) {
+        Purchase photo;
+        DbConnector con = new DbConnector();
+        photo = con.getPhotoPurchase(id);
         return photo;
     }
     

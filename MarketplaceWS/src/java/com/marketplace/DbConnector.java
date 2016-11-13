@@ -6,6 +6,7 @@
 package com.marketplace;
 
 import com.mysql.jdbc.*;
+import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -205,8 +206,6 @@ public class DbConnector {
             es = new Purchase[count];
             rs = st.executeQuery(query1);
             while (rs.next()) {
-                /*private Integer purchaseId;
-            */
                 es[i] = new Purchase();
                 es[i].setPurchaseId(rs.getInt("purchase_id"));
                 es[i].setBuyerId(rs.getInt("buyer_id"));
@@ -233,5 +232,63 @@ public class DbConnector {
         
         return es;
     }
+
+    Product getPhotoProduct(int id) {
+        Product result = null;
+        String query1;
+        query1 = ("SELECT * FROM product WHERE p_id = '"+id+"'");
+       
+        try{
+            rs = st.executeQuery(query1);
+            if(rs.next()){
+                result= new Product();
+                 result.setPId(rs.getInt("p_id"));
+                result.setNamaProduk(rs.getString("namaProduk"));
+                 result.setDescription(rs.getString("description"));
+                result.setPrice(rs.getString("price"));
+                 result.setPhotoUrl(rs.getBytes("photo_url"));
+                 result.setCreatedAt(rs.getDate("created_at"));
+                 result.setImageType(rs.getString("image_Type"));
+                result.setImageName(rs.getString("image_Name"));
+                 result.setUserId(rs.getInt("user_Id"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Result: " + ex);
+        }
+        return result;
+    }
+    
+    public Purchase getPhotoPurchase(int id){
+        String query1;
+        query1 = ("SELECT * FROM purchase WHERE purchase.purchase_id = '"+id+"'");
+        Purchase result = null;
+        try{
+            rs = st.executeQuery(query1);
+            if (rs.next()) {
+                result = new Purchase();
+                result.setPurchaseId(rs.getInt("purchase_id"));
+                result.setBuyerId(rs.getInt("buyer_id"));
+                result.setProductId(rs.getInt("product_id"));
+                result.setConsignee("consignee");
+                result.setFulladdress(rs.getString("fulladdress"));
+                result.setQuantity(rs.getInt(6));
+                result.setCreditcardnumber(rs.getString(7));
+                result.setPostalcode(rs.getString(8));
+                result.setPhonenumber(rs.getString(9));
+                result.setCreatedAt(rs.getDate(10));
+                result.setCardVerification(rs.getString(11));
+                result.setProductName(rs.getString(12));
+                result.setProductDescription(rs.getString(13));
+                result.setProductPrice(rs.getString(14));
+                result.setProductPhotourl(rs.getBytes(15));
+                result.setSellerId(rs.getInt(16));
+                result.setImageType(rs.getString(17));
+            }
+        }catch(Exception ex){
+            System.out.println("Error :" +ex);
+        }
+        return result;
+    }
+    
     
 }
