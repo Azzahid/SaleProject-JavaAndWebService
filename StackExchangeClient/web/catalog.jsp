@@ -94,7 +94,7 @@
                                     out.print("LIKED");
                             }  
                             out.print("</button>"
-                                    + "<a class='link color-green font-bold' href ='confirmation_purchase.php?id_active="+"1"+"&id_product="+"5'>"
+                                    + "<a class='link color-green font-bold' href ='confirmation_purchase.jsp?id_product="+temp.getPId()+"'>"
                                     + "<span >BUY</span></a>"
                                 + "</div>"
                             + "</div>"
@@ -107,8 +107,6 @@
         } catch (Exception ex) {
             out.println("Result = "+ex);
         }
-        String userid = (String)session.getAttribute("userid");
-        out.println(userid);
     %>
     <%-- end web service invocation --%><hr/>
 
