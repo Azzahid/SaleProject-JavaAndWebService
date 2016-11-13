@@ -212,4 +212,13 @@ public class marketplace {
             return null;
         }
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "deleteProduct")
+    public Boolean deleteProduct(@WebParam(name = "product_id") int product_id) {
+        DbConnector con = new DbConnector();
+        return con.deleteProduct(product_id);
+    }
 }

@@ -461,4 +461,18 @@ public class DbConnector {
         
         return es;
     }
+    
+    public boolean deleteProduct(int product_id) {
+        String query1;
+        query1 = "DELETE FROM product WHERE p_id='"+product_id+"'";
+        try {
+            st.executeUpdate(query1);
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Error2 :" +ex);
+            return false;
+        }
+        
+        return true;
+    }
 }

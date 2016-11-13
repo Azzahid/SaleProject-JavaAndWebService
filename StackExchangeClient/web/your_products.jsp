@@ -42,11 +42,23 @@
         else {
             user_id = Integer.parseInt(connection.getHeaderField("user_id"));
         }
+        String ds = request.getParameter("d");
         
-        String d = request.getParameter("d");
-        out.println("d: "+d);
-        if("GET".equalsIgnoreCase(request.getMethod()) && d != null) {
-            
+        
+        if("GET".equalsIgnoreCase(request.getMethod()) && ds != null) {
+            int d = Integer.parseInt(ds);
+//            out.println("d: "+d);
+            try {
+                com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
+                com.marketplace.Marketplace port = service.getMarketplacePort();
+                 // TODO initialize WS operation arguments here
+                int productId = d;
+                // TODO process result here
+                java.lang.Boolean result = port.deleteProduct(productId);
+//                out.println("Result = "+result);
+            } catch (Exception ex) {
+//                 out.println("ex = "+ex);
+            }
         }
         %>
 <!DOCTYPE html>
