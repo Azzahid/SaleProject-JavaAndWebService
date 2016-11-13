@@ -40,8 +40,10 @@
         else {
             String token = connection.getHeaderField("token");
             String uname = connection.getHeaderField("username");
+            String userid = connection.getHeaderField("userid");
             session.setAttribute("token", token);
             session.setAttribute("username", uname);
+            session.setAttribute("userid",userid);
             response.sendRedirect("catalog.jsp");
         }
     } else if(user != null && pass != null && (user.equals("") || pass.equals(""))){

@@ -5,11 +5,8 @@
  */
 package com.marketplace;
 
-import com.mysql.jdbc.*;
+import java.sql.*;
 import java.io.InputStream;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

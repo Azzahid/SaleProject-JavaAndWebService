@@ -17,6 +17,8 @@ import java.sql.*;
 import java.util.Random;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 /**
  *
@@ -25,6 +27,7 @@ import javax.servlet.RequestDispatcher;
 
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    public static String userid;
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -64,12 +67,18 @@ public class LoginServlet extends HttpServlet {
             message = "Login Successful";
             token = getToken();
             response.addHeader("username", user);
+            try {
+                insertTokenDB(token, user);
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } else {
             message = "Login Failed : User not exist !";
             response.sendError(0, message);
         }
         response.addHeader("token", token);
         response.addHeader("message",message);
+        response.addHeader("userid",userid);
         response.flushBuffer();
     }
     
@@ -102,6 +111,7 @@ public class LoginServlet extends HttpServlet {
             // Check if username / email exist
             String query = "SELECT * FROM user WHERE username = '"+username+"' AND password = '"+pass+"'";
             ResultSet result = st.executeQuery(query);
+            userid = result.getString("id");
             if (result.next() == true) {
                 return true;
             }
