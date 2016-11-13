@@ -175,6 +175,29 @@ public class marketplace {
         
         return true;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "insertLike")
+    public Integer insertLike(@WebParam(name = "barangid") int barangid, @WebParam(name = "userid") int userid) {
+       Integer result = 0;
+       DbConnector con = new DbConnector();
+       result = con.InsertLikeUser(barangid, userid);
+       return result;
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "changeLikeStatus")
+    public Integer changeLikeStatus(@WebParam(name = "barangid") int barangid, @WebParam(name = "userid") int userid) {
+        Integer result = 0;
+        DbConnector con = new DbConnector();
+        int x = con.getLikeStatus(userid, barangid);
+        result = con.changeLikeStatus(barangid, x, userid);
+        return result;
+    }
     
     
 }

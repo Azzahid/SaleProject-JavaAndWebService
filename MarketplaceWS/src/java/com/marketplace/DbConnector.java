@@ -346,6 +346,47 @@ public class DbConnector {
         return true;
     }
     
+    public int changeLikeStatus(int barangid, int status,int userid){
+        int result = 0;
+        String query1;
+        if(status == 0){
+            query1 = "UPDATE user_like SET status = 1 WHERE user_id = '"+userid+"'AND barang_id='"+barangid+"'";
+        }else{
+            query1 = ("UPDATE user_like SET status = 0 WHERE user_id = '"+userid+"'AND barang_id='"+barangid+"'");
+        }
+        try{
+            int k = st.executeUpdate(query1);
+            if (k>0) {
+               result = 1;
+            }else{
+               result = 0;
+            }
+        } catch( Exception ex ) {
+          System.out.println("Error : " + ex);
+        }
+        
+        return result;
+    }
+    
+    public int InsertLikeUser(int barangid, int userid){
+        int result = 0;
+        String query1;
+        query1 = "INSERT INTO user_like (user_id, barang_id, status) VALUES ('"+userid+"','"+barangid+"',1)";
+        try{
+            int k = st.executeUpdate(query1);
+            if (k>0) {
+               result = 1;
+            }else{
+               result = 0;
+            }
+        } catch( Exception ex ) {
+          System.out.println("Error : " + ex);
+        }
+        
+        return result;
+    }
+    
+    
     public void close(){
         try {
             rs.close();
