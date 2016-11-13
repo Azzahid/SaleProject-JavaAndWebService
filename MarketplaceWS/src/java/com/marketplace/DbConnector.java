@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -35,7 +37,7 @@ public class DbConnector {
         int count = -999;
         try{
             String query;
-            query = ("SELECT COUNT(*) AS total FROM user_like WHERE barang_id='"+Integer.toString(productid)+"'");
+            query = ("SELECT COUNT(*) AS total FROM user_like WHERE barang_id='"+Integer.toString(productid)+"' AND status !=0");
             rs = st.executeQuery(query);
             while(rs.next()){
                 count = rs.getInt("total");
@@ -290,5 +292,14 @@ public class DbConnector {
         return result;
     }
     
+    public void close(){
+        try {
+            rs.close();
+             st.close();
+             con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(DbConnector.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
 }

@@ -36,6 +36,7 @@ public class marketplace {
         //TODO write your implementation code here:
         DbConnector connect = new DbConnector();
         int like = connect.getTotalLike(productid);
+        connect.close();
         return like;
     }
 
@@ -61,6 +62,7 @@ public class marketplace {
         Integer result = null;
         DbConnector con = new DbConnector();
         result = con.getLikeStatus(userid, productid);
+        con.close();
         return result;
     }
 
@@ -72,6 +74,7 @@ public class marketplace {
         Integer result = null;
         DbConnector con = new DbConnector();
         result = con.getTotalPurchase(id);
+        con.close();
         return result;
     }
 
@@ -82,11 +85,9 @@ public class marketplace {
     public Product[] searchProduct(@WebParam(name = "text") String text, @WebParam(name = "option") int option) {
         Product[] result = null;
         DbConnector con = new DbConnector();
-        if ((result = con.searchProduct(text,option)) != null) {
-            return result;
-        }else{
-            return null;
-        }
+        result = con.searchProduct(text,option);
+        con.close();
+        return result;
     }
 
     /**
@@ -97,7 +98,7 @@ public class marketplace {
         Purchase[] result;
         DbConnector con = new DbConnector();
         result =con.getProductPurchase(userid, 1);
-        
+        con.close();
         return result;
     }
 
@@ -109,6 +110,7 @@ public class marketplace {
         Purchase[] result;
         DbConnector con = new DbConnector();
         result = con.getProductPurchase(userid, 0);
+        con.close();
         return result;
     }
 
@@ -120,6 +122,7 @@ public class marketplace {
         Product photo;
         DbConnector con = new DbConnector();
         photo = con.getPhotoProduct(id);
+        con.close();
         return photo;
     }
     
@@ -131,6 +134,7 @@ public class marketplace {
         Purchase photo;
         DbConnector con = new DbConnector();
         photo = con.getPhotoPurchase(id);
+        con.close();
         return photo;
     }
     

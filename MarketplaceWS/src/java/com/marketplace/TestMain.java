@@ -39,7 +39,6 @@ public class TestMain {
         Product test2 = con.getPhotoProduct(17);
         
         InputStream ax;
-        ax = test.getProductPhotourl().getBinaryStream();
         
         System.out.println(test.getProductPhotourl().toString());
         System.out.println(test2.getPhotoUrl().toString());
