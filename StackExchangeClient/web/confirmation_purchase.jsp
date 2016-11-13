@@ -21,7 +21,7 @@
                 <h2>Please confirm your purchase</h2>
             </div>
 
-            <form method="post" id="purchase_form">
+            <form method="post" id="purchase_form" action="confirmation_purchase.jsp">
                 <span id="product_price" value=""></span>
                 <input type="hidden" name="id_product" value="">
                 <input type="hidden" name="id_active" value="">
@@ -43,7 +43,7 @@
                 </div>
                 <div>
                     <label for="full_address">Full Address</label><br />
-                    <textarea name="full_address" rows="5" cols="50" id="full_address" class="input-textarea	"></textarea>
+                    <textarea name="full_address" rows="5" cols="50" id="full_address" class="input-textarea    "></textarea>
                 </div>
                 <div>
                     <label for="postal_code">Postal Code</label><br />
@@ -68,6 +68,35 @@
                 </div>
             </form>
         </div>
+    <%-- start web service invocation --%><hr/>
+    <%
+        if("POST".equalsIgnoreCase(request.getMethod())) {
+            try {
+                com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
+                com.marketplace.Marketplace port = service.getMarketplacePort();
+                 // TODO initialize WS operation arguments here
+                int buyerId = Integer.parseInt(request.getParameter("id_active"));
+                int productId = Integer.parseInt(request.getParameter("id_product"));
+                java.lang.String consignee = request.getParameter("consignee");
+                java.lang.String fulladdress = request.getParameter("full_address");
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                java.lang.String creditcardnumber = request.getParameter("credit_card");
+                java.lang.String postalcode = request.getParameter("postal_code");
+                java.lang.String phonenumber = request.getParameter("phone_number");
+                java.lang.String cardVerification = request.getParameter("card_verification");;
+                // TODO process result here
+                java.lang.Boolean result = port.confirmPurchase(buyerId, productId, consignee, fulladdress, quantity, creditcardnumber, postalcode, phonenumber, cardVerification);
+                out.println("Result = "+result);
+            } catch (Exception ex) {
+                out.println("Ex = "+ex);
+            }
+        }
+        else {
+            out.println(request.getParameter("id_product"));
+        }
+    
+    %>
+    <%-- end web service invocation --%><hr/>
     </body>
 
     <script type="text/javascript" src="js/confirmation_purchase.js"></script>
