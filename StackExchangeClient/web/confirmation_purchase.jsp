@@ -4,7 +4,66 @@
     Author     : user-BL
 --%>
 
+<%@page import="java.net.HttpURLConnection"%>
+<%@page import="java.net.URL"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+        
+    String url = "http://localhost:8082/IdentityServices/TokenServlet";
+    URL iurl = new URL(url);
+    HttpURLConnection connection = (HttpURLConnection)iurl.openConnection();
+    connection.setDoOutput(true);
+    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+    // Send POST output.
+    connection.setRequestMethod("POST");
+    java.io.DataOutputStream printout = new java.io.DataOutputStream(connection.getOutputStream ());
+    String token = (String)session.getAttribute("token");
+    out.println(token);
+    String content = "token=" + token;
+    printout.writeBytes (content);
+    printout.flush (); 
+    printout.close ();  
+
+    // retrieve response from IS
+    java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
+        (java.io.InputStream) connection.getContent()));
+    String line;
+
+    String error = "";
+    int user_id = 0;
+    String username = "";
+    String consignee = "";
+    String address = "";
+    String postalcode = "";
+    String phonenumber = "";
+    int product_id = 0;
+    if(connection.getResponseMessage().contains("invalid")) {
+        error = connection.getResponseMessage();
+        username = "error";
+    }
+    else {
+        username = connection.getHeaderField("username");
+        consignee = connection.getHeaderField("fullname");
+        address = connection.getHeaderField("address");
+        postalcode = connection.getHeaderField("postalcode");
+        phonenumber = connection.getHeaderField("phonenumber");
+        user_id = Integer.parseInt(connection.getHeaderField("user_id"));
+        product_id = Integer.parseInt(request.getParameter("id_product"));
+    }
+    
+    com.marketplace.Product product = null;
+    try {
+	com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
+	com.marketplace.Marketplace port = service.getMarketplacePort();
+	 // TODO initialize WS operation arguments here
+	int id = product_id;
+	// TODO process result here
+         product = port.getPhoto(id);
+    } catch (Exception ex) {
+	out.println("Ex = "+ex);
+    }
+%>
 
 <!DOCTYPE html>
 <html>
@@ -21,37 +80,33 @@
                 <h2>Please confirm your purchase</h2>
             </div>
 
-            <form method="post" id="purchase_form" action="confirmation_purchase.jsp">
-                <span id="product_price" value=""></span>
-                <input type="hidden" name="id_product" value="">
-                <input type="hidden" name="id_active" value="">
-                <input type="hidden" name="product_name" value="">
-                <input type="hidden" name="product_description" value="">
-                <input type="hidden" name="product_price" value="">
-                <input type="hidden" name="seller_id" value="">
-                <p>Product : </p>
-                <p>Price : IDR </p>
+            <form method="post" id="purchase_form" action="your_products.jsp">
+                <span id="product_price" value="<%out.print(product.getPrice());%>"></span>
+                <input type="hidden" name="id_product" value="<%out.print(product_id);%>">
+                <input type="hidden" name="id_active" value="<%out.print(user_id);%>">
+                <p>Product : <%out.print(product.getNamaProduk());%></p>
+                <p>Price : IDR <%out.print(product.getPrice());%></p>
                 <p>Quantity :
                     <input type="text" name="quantity" value="1" onkeyup="updateTotalPrice()" id="quantity">
                     pcs
                 </p>
-                <p>Total Price : IDR <span id="total_price"></span></p>
+                <p>Total Price : IDR <span id="total_price"><%out.print(product.getPrice());%></span></p>
                 <p>Delivery to :</p>
                 <div>
                     <label for="consignee">Consignee</label><br />
-                    <input type="text" name="consignee" id="consignee" value="" class="input-text">
+                    <input type="text" name="consignee" id="consignee" value="<%out.print(consignee);%>" class="input-text">
                 </div>
                 <div>
                     <label for="full_address">Full Address</label><br />
-                    <textarea name="full_address" rows="5" cols="50" id="full_address" class="input-textarea    "></textarea>
+                    <textarea name="full_address" rows="5" cols="50" id="full_address" class="input-textarea    "><%out.print(address);%></textarea>
                 </div>
                 <div>
                     <label for="postal_code">Postal Code</label><br />
-                    <input type="text" name="postal_code" id="postal_code" value="" class="input-text">
+                    <input type="text" name="postal_code" id="postal_code" value="<%out.print(postalcode);%>" class="input-text">
                 </div>
                 <div>
                     <label for="phone_number">Phone Number</label><br />
-                    <input type="text" name="phone_number" id="phone_number" value="" class="input-text">
+                    <input type="text" name="phone_number" id="phone_number" value="<%out.print(phonenumber);%>" class="input-text">
                 </div>
                 <div>
                     <label for="credit_card">12 Digits Credit Card Number</label><br />
@@ -68,35 +123,6 @@
                 </div>
             </form>
         </div>
-    <%-- start web service invocation --%><hr/>
-    <%
-        if("POST".equalsIgnoreCase(request.getMethod())) {
-            try {
-                com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
-                com.marketplace.Marketplace port = service.getMarketplacePort();
-                 // TODO initialize WS operation arguments here
-                int buyerId = Integer.parseInt(request.getParameter("id_active"));
-                int productId = Integer.parseInt(request.getParameter("id_product"));
-                java.lang.String consignee = request.getParameter("consignee");
-                java.lang.String fulladdress = request.getParameter("full_address");
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-                java.lang.String creditcardnumber = request.getParameter("credit_card");
-                java.lang.String postalcode = request.getParameter("postal_code");
-                java.lang.String phonenumber = request.getParameter("phone_number");
-                java.lang.String cardVerification = request.getParameter("card_verification");;
-                // TODO process result here
-                java.lang.Boolean result = port.confirmPurchase(buyerId, productId, consignee, fulladdress, quantity, creditcardnumber, postalcode, phonenumber, cardVerification);
-                out.println("Result = "+result);
-            } catch (Exception ex) {
-                out.println("Ex = "+ex);
-            }
-        }
-        else {
-            out.println(request.getParameter("id_product"));
-        }
-    
-    %>
-    <%-- end web service invocation --%><hr/>
     </body>
 
     <script type="text/javascript" src="js/confirmation_purchase.js"></script>
