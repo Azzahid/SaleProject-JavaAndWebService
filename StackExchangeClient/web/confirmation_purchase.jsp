@@ -80,7 +80,7 @@
                 <h2>Please confirm your purchase</h2>
             </div>
 
-            <form method="post" id="purchase_form" action="your_products.jsp">
+            <form method="post" id="purchase_form" action="purchases.jsp">
                 <span id="product_price" value="<%out.print(product.getPrice());%>"></span>
                 <input type="hidden" name="id_product" value="<%out.print(product_id);%>">
                 <input type="hidden" name="id_active" value="<%out.print(user_id);%>">

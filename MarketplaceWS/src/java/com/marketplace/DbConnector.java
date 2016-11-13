@@ -27,7 +27,7 @@ public class DbConnector {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "ladrangotoma");
             st = (Statement) con.createStatement();
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println("Error "+ ex);
@@ -395,5 +395,54 @@ public class DbConnector {
         } catch (SQLException ex) {
             Logger.getLogger(DbConnector.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public Product[] getYourProduct(int user_id){
+        Product[] es = null;
+        try{
+            String query;
+            int count;
+            int i = 0;
+            query = ("SELECT COUNT(*) AS total FROM product WHERE user_id = '"+user_id+"'");
+            rs = st.executeQuery(query);
+            if(rs.next()){
+                count = rs.getInt("total");
+            }else{
+                return null;
+            }
+            if(count==0){
+                return null;
+            }
+            es = new Product[count];
+            query = ("SELECT * FROM product WHERE user_id = '"+user_id+"'");
+            rs = st.executeQuery(query);
+            while(rs.next()){
+                /*
+                private Integer pId;
+                private String namaProduk;
+                private String description;
+                private String price;
+                private byte[] photoUrl;
+                private Date createdAt;
+                private String imageType;
+                private String imageName;
+                private User userId;*/
+                es[i] = new Product();
+                es[i].setPId(rs.getInt("p_Id"));
+                es[i].setNamaProduk(rs.getString("namaProduk"));
+                es[i].setDescription(rs.getString("description"));
+                es[i].setPrice(rs.getString("price"));
+                es[i].setPhotoUrl(null);
+                es[i].setCreatedAt(rs.getDate("created_At"));
+                es[i].setImageType(rs.getString("image_Type"));
+                es[i].setImageName(rs.getString("image_Name"));
+                es[i].setUserId(rs.getInt("user_Id"));
+                i++;
+            }
+        }catch(Exception ex){
+            System.out.println("Result: "+ex);
+        }
+        
+        return es;
     }
 }

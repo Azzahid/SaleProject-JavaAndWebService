@@ -4,6 +4,18 @@
 <xsd:import namespace="http://marketplace.com/" schemaLocation="http://localhost:8081/MarketplaceWS/marketplace?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="getProductPurchase">
+<part name="parameters" element="tns:getProductPurchase"/>
+</message>
+<message name="getProductPurchaseResponse">
+<part name="parameters" element="tns:getProductPurchaseResponse"/>
+</message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <message name="getLike">
 <part name="parameters" element="tns:getLike"/>
 </message>
@@ -34,13 +46,51 @@
 <message name="searchProductResponse">
 <part name="parameters" element="tns:searchProductResponse"/>
 </message>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
+<message name="getProductSales">
+<part name="parameters" element="tns:getProductSales"/>
 </message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
+<message name="getProductSalesResponse">
+<part name="parameters" element="tns:getProductSalesResponse"/>
+</message>
+<message name="getPhoto">
+<part name="parameters" element="tns:getPhoto"/>
+</message>
+<message name="getPhotoResponse">
+<part name="parameters" element="tns:getPhotoResponse"/>
+</message>
+<message name="getPhotoPurchase">
+<part name="parameters" element="tns:getPhotoPurchase"/>
+</message>
+<message name="getPhotoPurchaseResponse">
+<part name="parameters" element="tns:getPhotoPurchaseResponse"/>
+</message>
+<message name="confirmPurchase">
+<part name="parameters" element="tns:confirmPurchase"/>
+</message>
+<message name="confirmPurchaseResponse">
+<part name="parameters" element="tns:confirmPurchaseResponse"/>
+</message>
+<message name="addProduct">
+<part name="parameters" element="tns:addProduct"/>
+</message>
+<message name="addProductResponse">
+<part name="parameters" element="tns:addProductResponse"/>
+</message>
+<message name="getYourProduct">
+<part name="parameters" element="tns:getYourProduct"/>
+</message>
+<message name="getYourProductResponse">
+<part name="parameters" element="tns:getYourProductResponse"/>
 </message>
 <portType name="marketplace">
+<operation name="getProductPurchase">
+<input wsam:Action="http://marketplace.com/marketplace/getProductPurchaseRequest" message="tns:getProductPurchase"/>
+<output wsam:Action="http://marketplace.com/marketplace/getProductPurchaseResponse" message="tns:getProductPurchaseResponse"/>
+</operation>
+<operation name="hello">
+<input wsam:Action="http://marketplace.com/marketplace/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://marketplace.com/marketplace/helloResponse" message="tns:helloResponse"/>
+</operation>
 <operation name="getLike">
 <input wsam:Action="http://marketplace.com/marketplace/getLikeRequest" message="tns:getLike"/>
 <output wsam:Action="http://marketplace.com/marketplace/getLikeResponse" message="tns:getLikeResponse"/>
@@ -61,13 +111,51 @@
 <input wsam:Action="http://marketplace.com/marketplace/searchProductRequest" message="tns:searchProduct"/>
 <output wsam:Action="http://marketplace.com/marketplace/searchProductResponse" message="tns:searchProductResponse"/>
 </operation>
-<operation name="hello">
-<input wsam:Action="http://marketplace.com/marketplace/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://marketplace.com/marketplace/helloResponse" message="tns:helloResponse"/>
+<operation name="getProductSales">
+<input wsam:Action="http://marketplace.com/marketplace/getProductSalesRequest" message="tns:getProductSales"/>
+<output wsam:Action="http://marketplace.com/marketplace/getProductSalesResponse" message="tns:getProductSalesResponse"/>
+</operation>
+<operation name="getPhoto">
+<input wsam:Action="http://marketplace.com/marketplace/getPhotoRequest" message="tns:getPhoto"/>
+<output wsam:Action="http://marketplace.com/marketplace/getPhotoResponse" message="tns:getPhotoResponse"/>
+</operation>
+<operation name="getPhotoPurchase">
+<input wsam:Action="http://marketplace.com/marketplace/getPhotoPurchaseRequest" message="tns:getPhotoPurchase"/>
+<output wsam:Action="http://marketplace.com/marketplace/getPhotoPurchaseResponse" message="tns:getPhotoPurchaseResponse"/>
+</operation>
+<operation name="confirmPurchase">
+<input wsam:Action="http://marketplace.com/marketplace/confirmPurchaseRequest" message="tns:confirmPurchase"/>
+<output wsam:Action="http://marketplace.com/marketplace/confirmPurchaseResponse" message="tns:confirmPurchaseResponse"/>
+</operation>
+<operation name="addProduct">
+<input wsam:Action="http://marketplace.com/marketplace/addProductRequest" message="tns:addProduct"/>
+<output wsam:Action="http://marketplace.com/marketplace/addProductResponse" message="tns:addProductResponse"/>
+</operation>
+<operation name="getYourProduct">
+<input wsam:Action="http://marketplace.com/marketplace/getYourProductRequest" message="tns:getYourProduct"/>
+<output wsam:Action="http://marketplace.com/marketplace/getYourProductResponse" message="tns:getYourProductResponse"/>
 </operation>
 </portType>
 <binding name="marketplacePortBinding" type="tns:marketplace">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="getProductPurchase">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="getLike">
 <soap:operation soapAction=""/>
 <input>
@@ -113,7 +201,52 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="hello">
+<operation name="getProductSales">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPhoto">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getPhotoPurchase">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="confirmPurchase">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="addProduct">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getYourProduct">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

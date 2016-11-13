@@ -10,6 +10,30 @@
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.marketplace.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+    <%
+        if("POST".equalsIgnoreCase(request.getMethod())) {
+            try {
+                com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
+                com.marketplace.Marketplace port = service.getMarketplacePort();
+                 // TODO initialize WS operation arguments here
+                int buyerId = Integer.parseInt(request.getParameter("id_active"));
+                int productId = Integer.parseInt(request.getParameter("id_product"));
+                java.lang.String consignee = request.getParameter("consignee");
+                java.lang.String fulladdress = request.getParameter("full_address");
+                int quantity = Integer.parseInt(request.getParameter("quantity"));
+                java.lang.String creditcardnumber = request.getParameter("credit_card");
+                java.lang.String postalcode = request.getParameter("postal_code");
+                java.lang.String phonenumber = request.getParameter("phone_number");
+                java.lang.String cardVerification = request.getParameter("card_verification");
+                // TODO process result here
+                java.lang.Boolean result = port.confirmPurchase(buyerId, productId, consignee, fulladdress, quantity, creditcardnumber, postalcode, phonenumber, cardVerification);
+                out.println("Result = "+result);
+             } catch (Exception ex) {
+                out.println("ex = "+ex);
+             }
+        }
+    
+    %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -80,5 +104,6 @@
     <%-- end web service invocation --%><hr/> 
         </div>
         <script type="text/javascript" src="js/catalog.js"></script>
+    
     </body>
 </html>

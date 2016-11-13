@@ -199,5 +199,17 @@ public class marketplace {
         return result;
     }
     
-    
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getYourProduct")
+    public Product[] getYourProduct(@WebParam(name = "user_id") int user_id) {
+        Product[] result = null;
+        DbConnector con = new DbConnector();
+        if((result = con.getYourProduct(user_id))!=null){
+            return result;
+        }else{
+            return null;
+        }
+    }
 }
