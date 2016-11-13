@@ -169,7 +169,7 @@ public class marketplace {
      * Web service operation
      */
     @WebMethod(operationName = "addProduct")
-    public Boolean addProduct(@WebParam(name = "productname") String productname, @WebParam(name = "description") String description, @WebParam(name = "price") String price, @WebParam(name = "imageblob") String imageblob) {
+    public Boolean addProduct(@WebParam(name = "productname") String productname, @WebParam(name = "description") String description, @WebParam(name = "price") String price, @WebParam(name = "imageblob") String imageblob, @WebParam(name = "userid") String userid) {
         //TODO write your implementation code here:
         DbConnector con = new DbConnector();
         
