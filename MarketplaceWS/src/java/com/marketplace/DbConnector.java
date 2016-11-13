@@ -5,7 +5,7 @@
  */
 package com.marketplace;
 
-import com.mysql.jdbc.*;
+import java.sql.*;
 import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,7 +27,7 @@ public class DbConnector {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "myPassword");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "");
             st = (Statement) con.createStatement();
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println("Error "+ ex);
