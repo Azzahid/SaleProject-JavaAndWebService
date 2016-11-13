@@ -4,6 +4,8 @@
     Author     : user-BL
 --%>
 
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="com.marketplace.*"%>
@@ -45,12 +47,12 @@
                     out.println("<span class='product-date'>"+ft.format(datetemp)+"</span><br />");
                     out.println("<span class = 'product-time'>"+tt.format(datetemp)+"</span>");
                     out.println("<hr />");
-                    out.println("<img src='' alt='product-image' width='100px' height='100px'>");
+                    out.println("<img src='/StackExchangeClient/PhotoGenerator?id="+temp.getPurchaseId()+"&pilihan=1' alt='product-image' width='100px' height='100px'>");
                     out.println("<div class='product-center-description'>");
                         out.println("<span class='product-name'>"+temp.getProductName()+"</span><br />");
-                        out.println("<span class= 'product-price'>IDR "+Integer.parseInt(temp.getProductPrice())*temp.getQuantity()+"</span><br />");
+                        out.println("<span class= 'product-price'>IDR "+NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(temp.getProductPrice())*temp.getQuantity())+"</span><br />");
                         out.println("<span class='product-price'>"+temp.getQuantity()+" pcs</span><br />");
-                        out.println( "<span class='product-price'>@IDR "+temp.getProductPrice()+"</span><br />");
+                        out.println( "<span class='product-price'>@IDR "+NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(temp.getProductPrice()))+"</span><br />");
                     out.println("</div>");
                     out.println("<div class='product-right-description'>");
                         out.println("<div class='margin-top'>");

@@ -1,7 +1,7 @@
+<%@page import="java.util.Locale"%>
+<%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@ page session="true" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="com.marketplace.*" %>
 <!DOCTYPE html>
@@ -14,8 +14,6 @@
         <link rel="stylesheet" type ="text/css" href="css/header.css">
         <link rel="stylesheet" type ="text/css" href="css/products.css">
     </head>
-    <%  String token=(String)session.getAttribute("token");
-        out.println(token); %>
     <body class="body-center helvetica">
         <jsp:include page="header.jsp" />
         <!-- bar question -->
@@ -70,10 +68,10 @@
                                     +   "<div class='product-date'>"+ft.format(datetemp)+"</div>");
                                     out.print("<div class='product-time'>added this on "+tt.format(datetemp)+"</div>"
                                     + "</div>");
-                            out.print("<img src=''"+"' alt='product-image' width='100px' height='100px'>");
+                            out.print("<img src='/StackExchangeClient/PhotoGenerator?id="+temp.getPId()+"&pilihan=2'"+"' alt='product-image' width='100px' height='100px'>");
                             out.print("<div class = 'product-center-description'>"
                                         + "<span class='product-name'>"+temp.getNamaProduk()+"</span><br />"
-                                        + "<span class='product-price'>IDR "+temp.getPrice()+"</span><br />"
+                                        + "<span class='product-price'>IDR "+NumberFormat.getNumberInstance(Locale.US).format(Integer.parseInt(temp.getPrice()))+"</span><br />"
                                         + "<span class='product-desc'>"+temp.getDescription()+"</span><br />"
                                     + "</div>");
                             out.print("<div class='product-right-description'>"
@@ -109,6 +107,8 @@
         } catch (Exception ex) {
             out.println("Result = "+ex);
         }
+        Cookie[] cookie = request.getCookies();
+        out.println(cookie[0].getValue());
     %>
     <%-- end web service invocation --%><hr/>
 
