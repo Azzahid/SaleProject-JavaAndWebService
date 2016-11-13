@@ -13,7 +13,6 @@
     String user = request.getParameter("username");
     String pass = request.getParameter("password");
     String error = "";
-    Cookie[] cookies = request.getCookies();
     
     if(user != null && pass != null && !user.equals("") && !pass.equals("")){
         String url = "http://localhost:8082/IdentityServices/LoginServlet";
@@ -34,16 +33,17 @@
         java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
             (java.io.InputStream) connection.getContent()));
 
-        out.println("<h2>Successful Authentication using REST</h2>");
         String line;
-        while ((line = reader.readLine()) != null) {
-            out.println(line + "<br>");
+        if(connection.getResponseMessage().contains("Failed")) {
+            error = connection.getResponseMessage();
         }
-        
-        //session.setAttribute("token", request.getParameter("token"));
-        //session.setAttribute("uname", request.getParameter("username"));
-        //session.setAttribute("userid", request.getParameter("userid"));
-        //response.sendRedirect("http://localhost:8080/StackExchangeClient/catalog.jsp");
+        else {
+            String token = connection.getHeaderField("token");
+            String uname = connection.getHeaderField("username");
+            session.setAttribute("token", token);
+            session.setAttribute("username", uname);
+            response.sendRedirect("catalog.jsp");
+        }
     } else if(user != null && pass != null && (user.equals("") || pass.equals(""))){
         // handle empty form or incomplete form 
         error = "Please enter username and password !";
@@ -67,7 +67,7 @@
 	</div>
 	
 	<div>
-            <form method="POST" action="dummy.jsp">
+            <form method="POST" action="login.jsp">
                 <span class="font-small">Email or Username</span><br><input type="text" name="username" class="input-text">
                 <span class="font-small">Password</span><br><input type="password" name="password"  class="input-text"><br><br>
                 <strong style="color:red;"><%out.println(error);%></strong><br>
@@ -76,8 +76,5 @@
 	</div>	
 	<br><br><br>
 	<p class="font-small"><strong>Don't have an account yet? Register <a href = "register.jsp" class="link"> here </a></strong></p>
-        Hello <b><%= request.getParameter("username") %></b>!
-        Hello <b><%= request.getParameter("token") %></b>!
-        Hello <b><%= request.getParameter("userid") %></b>!
     </body>
 </html>

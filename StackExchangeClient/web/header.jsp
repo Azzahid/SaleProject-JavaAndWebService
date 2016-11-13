@@ -1,7 +1,8 @@
+<%@ page session="true" %>
 <div class = "text-align-center arial">
     <h1><span class="color-red">Sale</span><span class="color-blue">Project</span></h1>
 </div>
-<p class="text-align-right">Hi, Varian<br />
+<p class="text-align-right">Hi, <%=session.getAttribute("username")%><br />
 <a href="login.jsp" class="link color-red">logout</a></p>
 <div>
     <ul>
