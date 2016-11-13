@@ -27,6 +27,7 @@ import javax.servlet.RequestDispatcher;
 
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
+    public String userid;
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -66,6 +67,7 @@ public class LoginServlet extends HttpServlet {
             message = "Login Successful";
             token = getToken();
             response.addHeader("username", user);
+            response.addHeader("userid", userid);
             try {
                 insertTokenDB(token, user);
             } catch (SQLException ex) {
@@ -110,6 +112,7 @@ public class LoginServlet extends HttpServlet {
             String query = "SELECT * FROM user WHERE username = '"+username+"' AND password = '"+pass+"'";
             ResultSet result = st.executeQuery(query);
             if (result.next() == true) {
+                userid = Integer.toString(result.getInt("id"));
                 return true;
             }
             conn.close();

@@ -164,6 +164,17 @@ public class marketplace {
             phonenumber, 
             card_verification);
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "addProduct")
+    public Boolean addProduct(@WebParam(name = "productname") String productname, @WebParam(name = "description") String description, @WebParam(name = "price") String price, @WebParam(name = "imageblob") String imageblob) {
+        //TODO write your implementation code here:
+        DbConnector con = new DbConnector();
+        
+        return true;
+    }
     
     
 }

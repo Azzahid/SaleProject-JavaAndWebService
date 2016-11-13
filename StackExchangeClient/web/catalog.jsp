@@ -107,6 +107,8 @@
         } catch (Exception ex) {
             out.println("Result = "+ex);
         }
+        String userid = (String)session.getAttribute("userid");
+        out.println(userid);
     %>
     <%-- end web service invocation --%><hr/>
 
