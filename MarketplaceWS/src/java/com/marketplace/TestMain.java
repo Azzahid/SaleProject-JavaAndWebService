@@ -37,12 +37,14 @@ public class TestMain {
         
         Purchase test = con.getPhotoPurchase(5);
         Product test2 = con.getPhotoProduct(17);
-         System.out.println(con.InsertLikeUser(3, 5));
-        int cek = con.getLikeStatus(17,15);
-        System.out.println(cek);
-       //System.out.println(con.changeLikeStatus(33, cek, 3));
-        //System.out.println(con.getLikeStatus(33, 3));
+        
+        InputStream ax;
+        
+        System.out.println(test.getProductPhotourl().toString());
+        System.out.println(test2.getPhotoUrl().toString());
+        
         System.out.println(a);
+//         System.out.println(con.confirmPurchase(7, 17, "consignee", "fulladdress", 2, "creditcardnumber", "postalcode", "phonenumber", "card_verification"));
     }
     
 }
