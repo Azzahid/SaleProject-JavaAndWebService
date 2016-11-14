@@ -172,13 +172,31 @@ Berikut pembagian tugas dari tim kami:
 REST :
 1. Generate token : 13514041
 2. Validasi token : 13514029
-3. Fungsionaltiax X : 135130XX
-4. ...
+3. SearchServlet : 13514095
+4. LoginServlet : 13514041
+5. DB : 13514041
+6. IdServlet : 13514029
+7. RegisterServlet : 13514029
+8. TokenServlet : 13514029
+9. logoutServlet : 13514041
 
 SOAP :
-1. Add Produce : 135130xx
-2. Fungsionalitas Y : 135130xx
-3. ...
+1. Add Product : 13513041
+2. getPhoto : 13514095
+3. getAllProduct : 13514095
+4. getProductPurchase : 13514095
+5. searchProduct : 13514095
+6. changeLikeStatus : 13514095
+7. insertLike : 13514095
+8. confirmPurchase : 13514041
+9. getPhotoPurchase : 13514095
+10. deleteProduct : 
+11. getLike : 13514095
+12. getLikeStatus : 13514095
+13. getPhotoPurchase : 13514095
+14. getProductSales : 13514095
+15. getTotalPurchase : 13514095
+16. getYouProduct : 13514029
 
 Web app (JSP) :
 1. Halaman Login : 13514041
@@ -190,4 +208,6 @@ Web app (JSP) :
 7. Halaman Edit Product : 13514041
 8. Halaman Sales : 13514095
 9. Halaman Purchases : 13514095
+10. PhotoGenerator : 13514095
+11. LikeServlet(TestServ) : 13514095
 
