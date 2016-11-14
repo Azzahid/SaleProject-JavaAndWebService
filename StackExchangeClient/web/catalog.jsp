@@ -101,15 +101,37 @@
                 SimpleDateFormat ft = new SimpleDateFormat("E, dd M yyyy");
                 SimpleDateFormat tt = new SimpleDateFormat("HH.mm");
                 for(int i =0; i<result.size();i++){
+                    String url2 = "http://localhost:8082/IdentityServices/IdServlet";
+                    URL iurl2 = new URL(url2);
+                    HttpURLConnection connection2 = (HttpURLConnection)iurl2.openConnection();
+                    connection2.setDoOutput(true);
+                    connection2.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                    // Send POST output.
+                    connection2.setRequestMethod("POST");
+                    java.io.DataOutputStream printout2 = new java.io.DataOutputStream(connection2.getOutputStream ());
+            //        out.println(token);
                     Product temp = result.get(i);
+                    String content2 = "user_id=" + temp.getUserId();
+                    printout2.writeBytes (content2);
+                    printout2.flush (); 
+                    printout2.close ();  
+
+                    java.io.BufferedReader reader2 = new java.io.BufferedReader(new java.io.InputStreamReader(
+                    (java.io.InputStream) connection2.getContent()));
+
+                    String usernameproduct = connection2.getHeaderField("username");
+                
+                
+
                     Date datetemp = temp.getCreatedAt().toGregorianCalendar().getTime();
                     int totallike = port.getLike(temp.getPId());
                     int status = port.getLikeStatus(temp.getPId(), user_id);
                     int totalpurchase = port.getTotalPurchase(temp.getPId());
                     out.print("<div class = 'product'>");
                             out.print("<div>"
-                                    +   "<div class='product-date'>"+ft.format(datetemp)+"</div>");
-                                    out.print("<div class='product-time'>added this on "+tt.format(datetemp)+"</div>"
+                                    +   "<div class='product-date'>"+usernameproduct+"</div>");
+                                    out.print("<div class='product-time'>added this on "+ft.format(datetemp)+" at "+tt.format(datetemp)+"</div>"
                                     + "</div>");
                             out.print("<img src='/StackExchangeClient/PhotoGenerator?id="+temp.getPId()+"&pilihan=2'"+"' alt='product-image' width='100px' height='100px'>");
                             out.print("<div class = 'product-center-description'>"

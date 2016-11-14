@@ -9,6 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.sql.*;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -147,8 +149,33 @@ public class DbConnector {
             query = ("SELECT COUNT(*) AS total FROM product WHERE namaProduk LIKE '%"+text+"%'");
             query1 = ("SELECT * FROM product WHERE namaProduk LIKE '%"+text+"%' ORDER BY created_at DESC");
         }else{
-            query = ("SELECT COUNT(*) AS total FROM product WHERE user_id LIKE '%"+text+"%'");
-            query1 = ("SELECT * FROM product WHERE user_id LIKE '%"+text+"%' ORDER BY created_at DESC");
+            try{
+                String url2 = "http://localhost:8082/IdentityServices/SearchServlet";
+                URL iurl2 = new URL(url2);
+                HttpURLConnection connection2 = (HttpURLConnection)iurl2.openConnection();
+                connection2.setDoOutput(true);
+                connection2.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                // Send POST output.
+                connection2.setRequestMethod("POST");
+                java.io.DataOutputStream printout2 = new java.io.DataOutputStream(connection2.getOutputStream ());
+        //        out.println(token);
+                String content2 = "text=" + text;
+                printout2.writeBytes (content2);
+                printout2.flush (); 
+                printout2.close ();  
+
+                // retrieve response from IS
+                java.io.BufferedReader reader2 = new java.io.BufferedReader(new java.io.InputStreamReader(
+                    (java.io.InputStream) connection2.getContent()));
+
+                text = connection2.getHeaderField("arrayid");
+            }catch(Exception ex){
+                System.out.println("Error : "+ex);
+            }
+
+            query = ("SELECT COUNT(*) AS total FROM product WHERE user_id IN "+text+"");
+            query1 = ("SELECT * FROM product WHERE user_id IN "+text+" ORDER BY created_at DESC");
         }
         try{
             int count;
@@ -179,6 +206,7 @@ public class DbConnector {
             }
         }catch(SQLException ex){
             System.out.println("Result: "+ex);
+            es = null;
         }
         
         return es;
