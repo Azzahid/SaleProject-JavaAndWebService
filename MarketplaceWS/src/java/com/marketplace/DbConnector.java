@@ -87,7 +87,7 @@ public class DbConnector {
                 es[i].setDescription(rs.getString("description"));
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(null);
-                es[i].setCreatedAt(rs.getDate("created_At"));
+                es[i].setCreatedAt(rs.getTimestamp("created_at"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));
@@ -171,7 +171,7 @@ public class DbConnector {
                 es[i].setDescription(rs.getString("description"));
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(null);
-                es[i].setCreatedAt(rs.getDate("created_at"));
+                es[i].setCreatedAt(rs.getTimestamp("created_at"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));
@@ -220,7 +220,7 @@ public class DbConnector {
                 es[i].setCreditcardnumber(rs.getString(7));
                 es[i].setPostalcode(rs.getString(8));
                 es[i].setPhonenumber(rs.getString(9));
-                es[i].setCreatedAt(rs.getDate(10));
+                es[i].setCreatedAt(rs.getTimestamp(10));
                 es[i].setCardVerification(rs.getString(11));
                 es[i].setProductName(rs.getString(12));
                 es[i].setProductDescription(rs.getString(13));
@@ -251,7 +251,7 @@ public class DbConnector {
                  result.setDescription(rs.getString("description"));
                 result.setPrice(rs.getString("price"));
                  result.setPhotoUrl(rs.getBytes("photo_url"));
-                 result.setCreatedAt(rs.getDate("created_at"));
+                 result.setCreatedAt(rs.getTimestamp("created_at"));
                  result.setImageType(rs.getString("image_Type"));
                 result.setImageName(rs.getString("image_Name"));
                  result.setUserId(rs.getInt("user_Id"));
@@ -279,7 +279,7 @@ public class DbConnector {
                 result.setCreditcardnumber(rs.getString(7));
                 result.setPostalcode(rs.getString(8));
                 result.setPhonenumber(rs.getString(9));
-                result.setCreatedAt(rs.getDate(10));
+                result.setCreatedAt(rs.getTimestamp(10));
                 result.setCardVerification(rs.getString(11));
                 result.setProductName(rs.getString(12));
                 result.setProductDescription(rs.getString(13));
@@ -463,7 +463,7 @@ public class DbConnector {
                 es[i].setDescription(rs.getString("description"));
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(null);
-                es[i].setCreatedAt(rs.getDate("created_At"));
+                es[i].setCreatedAt(rs.getTimestamp("created_At"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));
