@@ -19,7 +19,7 @@
         <div class = "border-bottom ">
             <h2>Please add your product here</h2>
         </div>
-        <form method="POST" name="addForm" id="addForm" onsubmit="return validateform()" action= "" enctype="multipart/form-data">	
+        <form method="POST" name="addForm" id="addForm" onsubmit="return validateform()" action= "your_products.jsp" enctype="multipart/form-data">	
             <span class="font-small">Name</span><br><input type="text" id="productName" name="productName" class="input-text" /><br>
             <span class="font-small">Description (max 200 chars)</span><br><textarea id="productDescription" name="productDescription" rows="4" cols="50" class="input-textarea"></textarea><br>
             <span class="font-small">Price (IDR)</span><br><input type="text" id="productPrice" name="productPrice" class="input-text" /><br>

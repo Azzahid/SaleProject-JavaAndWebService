@@ -60,6 +60,26 @@
 //                 out.println("ex = "+ex);
             }
         }
+        if("POST".equalsIgnoreCase(request.getMethod())) {
+            try {
+                com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
+                com.marketplace.Marketplace port = service.getMarketplacePort();
+                 // TODO initialize WS operation arguments here
+                java.lang.String productName = request.getParameter("productName");
+                out.println(productName);
+                java.lang.String productPrice = request.getParameter("productPrice");
+                out.println(productPrice);
+                java.lang.String productDescription = request.getParameter("productDescription");
+                out.println(productDescription);
+                int productId = Integer.parseInt(request.getParameter("productId"));
+                out.println(productId);
+                // TODO process result here
+                java.lang.Boolean result = port.editProduct(productName, productPrice, productDescription, productId);
+                out.println("Result = "+result);
+            } catch (Exception ex) {
+                out.println("ex = "+ex);
+            }
+        }
         %>
 <!DOCTYPE html>
 <html>
@@ -128,6 +148,8 @@
                 out.print("Product Not Found");
             }
     %>
+    
+    
     </body>
     <script type="text/javascript" src="js/your_products.js"></script>
 </html>

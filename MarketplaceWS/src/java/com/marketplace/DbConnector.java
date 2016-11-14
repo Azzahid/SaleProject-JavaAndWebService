@@ -517,4 +517,17 @@ public class DbConnector {
         
         return true;
     }
+    public boolean editProduct(String name, String price, String desc, int pid) {
+        String query1;
+        query1 = "UPDATE product SET namaProduk = '"+name+"', description = '"+desc+"', price = '"+price+"' WHERE p_id = '"+pid+"' ";
+        try {
+            st.executeUpdate(query1);
+            con.close();
+        } catch (SQLException ex) {
+            System.out.println("Error2 :" +ex);
+            return false;
+        }
+        
+        return true;
+    }
 }

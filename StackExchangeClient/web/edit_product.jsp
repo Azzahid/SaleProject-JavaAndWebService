@@ -5,6 +5,23 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    int product_id = Integer.parseInt(request.getParameter("id_product"));
+    com.marketplace.Product product = null;
+    try {
+	com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
+	com.marketplace.Marketplace port = service.getMarketplacePort();
+	 // TODO initialize WS operation arguments here
+	int id = product_id;
+	// TODO process result here
+         product = port.getPhoto(id);
+    } catch (Exception ex) {
+	out.println("Ex = "+ex);
+    }
+    if("POST".equalsIgnoreCase(request.getMethod())) {
+        out.println("POST");
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,11 +36,12 @@
             <h2>Please update your product here</h2>
         </div>
 
-        <form method="POST" name="editForm" id="editForm" onsubmit="return validateform()" action= "" enctype="multipart/form-data">	
-            <span class="font-small">Name</span><br><input type="text" id="productName" name="productName" class="input-text" value="" /><br>
-            <span class="font-small">Description (max 200 chars)</span><br><textarea id="productDescription" name="productDescription"  rows="4" cols="50" class="input-textarea"></textarea><br>
-            <span class="font-small">Price (IDR)</span><br><input type="text" id="productPrice" name="productPrice" class="input-text" value=""/><br>
-            <span class="font-small">Photo</span><br><input type="file" id="fileToUpload" name="fileToUpload" style="color:transparent; width:90px"/><label id="fileLabel"></label><br><br>
+        <form method="POST" name="editForm" id="editForm" action= "your_products.jsp">	
+            <input type="hidden" id="productId" name="productId"  value="<%out.print(product_id);%>"></input>
+            <span class="font-small">Name</span><br><input type="text" id="productName" name="productName" class="input-text" value="<%out.print(product.getNamaProduk());%>" /><br>
+            <span class="font-small">Description (max 200 chars)</span><br><textarea id="productDescription" name="productDescription"  rows="4" cols="50" class="input-textarea"><%out.print(product.getDescription());%></textarea><br>
+            <span class="font-small">Price (IDR)</span><br><input type="text" id="productPrice" name="productPrice" class="input-text" value="<%out.print(product.getPrice());%>"/><br>
+            <span class="font-small">Photo</span><br><input type="file" id="fileToUpload" name="fileToUpload" style="color:transparent; width:90px"/><%out.print(product.getNamaProduk()+"."+product.getImageType());%><label id="fileLabel"></label><br><br>
             <a href="catalog.jsp" class="cancel-button float-right">CANCEL</a>
 
             <input type="submit" value="UPDATE" name="update" class="button float-right" >

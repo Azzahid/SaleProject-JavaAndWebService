@@ -239,4 +239,16 @@ public class marketplace {
         DbConnector con = new DbConnector();
         return con.deleteProduct(product_id);
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "editProduct")
+    public Boolean editProduct(@WebParam(name = "productName") String productName, 
+            @WebParam(name = "productPrice") String productPrice, 
+            @WebParam(name = "productDescription") String productDescription,
+            @WebParam(name = "product_id") int product_id) {
+        DbConnector con = new DbConnector();
+        return con.editProduct(productName, productPrice, productDescription, product_id);
+    }
 }
