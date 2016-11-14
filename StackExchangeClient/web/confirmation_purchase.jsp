@@ -19,7 +19,7 @@
     connection.setRequestMethod("POST");
     java.io.DataOutputStream printout = new java.io.DataOutputStream(connection.getOutputStream ());
     String token = (String)session.getAttribute("token");
-    out.println(token);
+//    out.println(token);
     String content = "token=" + token;
     printout.writeBytes (content);
     printout.flush (); 

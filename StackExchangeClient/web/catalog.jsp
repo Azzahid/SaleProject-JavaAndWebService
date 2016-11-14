@@ -43,7 +43,6 @@
         </form>
         <!--BagianProduk rencananya pake PHP di echo satu-satu-->
         <div id = "search">
-                <%-- start web service invocation --%><hr/>
     <%
         try {
             com.marketplace.Marketplace_Service service = new com.marketplace.Marketplace_Service();
@@ -61,7 +60,7 @@
             connection.setRequestMethod("POST");
             java.io.DataOutputStream printout = new java.io.DataOutputStream(connection.getOutputStream ());
             String token = (String)session.getAttribute("token");
-            out.println(token);
+//            out.println(token);
             String content = "token=" + token;
             printout.writeBytes (content);
             printout.flush (); 
@@ -152,7 +151,6 @@
             out.println("Result = "+ex);
         }
     %>
-    <%-- end web service invocation --%><hr/>
 
         </div>
         <script type="text/javascript" src="js/catalog.js"></script>
