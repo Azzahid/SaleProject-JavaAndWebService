@@ -9,6 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.sql.*;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -87,7 +89,7 @@ public class DbConnector {
                 es[i].setDescription(rs.getString("description"));
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(null);
-                es[i].setCreatedAt(rs.getDate("created_At"));
+                es[i].setCreatedAt(rs.getTimestamp("created_at"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));
@@ -147,8 +149,33 @@ public class DbConnector {
             query = ("SELECT COUNT(*) AS total FROM product WHERE namaProduk LIKE '%"+text+"%'");
             query1 = ("SELECT * FROM product WHERE namaProduk LIKE '%"+text+"%' ORDER BY created_at DESC");
         }else{
-            query = ("SELECT COUNT(*) AS total FROM product WHERE user_id LIKE '%"+text+"%'");
-            query1 = ("SELECT * FROM product WHERE user_id LIKE '%"+text+"%' ORDER BY created_at DESC");
+            try{
+                String url2 = "http://localhost:8082/IdentityServices/SearchServlet";
+                URL iurl2 = new URL(url2);
+                HttpURLConnection connection2 = (HttpURLConnection)iurl2.openConnection();
+                connection2.setDoOutput(true);
+                connection2.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                // Send POST output.
+                connection2.setRequestMethod("POST");
+                java.io.DataOutputStream printout2 = new java.io.DataOutputStream(connection2.getOutputStream ());
+        //        out.println(token);
+                String content2 = "text=" + text;
+                printout2.writeBytes (content2);
+                printout2.flush (); 
+                printout2.close ();  
+
+                // retrieve response from IS
+                java.io.BufferedReader reader2 = new java.io.BufferedReader(new java.io.InputStreamReader(
+                    (java.io.InputStream) connection2.getContent()));
+
+                text = connection2.getHeaderField("arrayid");
+            }catch(Exception ex){
+                System.out.println("Error : "+ex);
+            }
+
+            query = ("SELECT COUNT(*) AS total FROM product WHERE user_id IN "+text+"");
+            query1 = ("SELECT * FROM product WHERE user_id IN "+text+" ORDER BY created_at DESC");
         }
         try{
             int count;
@@ -171,7 +198,7 @@ public class DbConnector {
                 es[i].setDescription(rs.getString("description"));
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(null);
-                es[i].setCreatedAt(rs.getDate("created_at"));
+                es[i].setCreatedAt(rs.getTimestamp("created_at"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));
@@ -179,6 +206,7 @@ public class DbConnector {
             }
         }catch(SQLException ex){
             System.out.println("Result: "+ex);
+            es = null;
         }
         
         return es;
@@ -220,7 +248,7 @@ public class DbConnector {
                 es[i].setCreditcardnumber(rs.getString(7));
                 es[i].setPostalcode(rs.getString(8));
                 es[i].setPhonenumber(rs.getString(9));
-                es[i].setCreatedAt(rs.getDate(10));
+                es[i].setCreatedAt(rs.getTimestamp(10));
                 es[i].setCardVerification(rs.getString(11));
                 es[i].setProductName(rs.getString(12));
                 es[i].setProductDescription(rs.getString(13));
@@ -251,7 +279,7 @@ public class DbConnector {
                  result.setDescription(rs.getString("description"));
                 result.setPrice(rs.getString("price"));
                  result.setPhotoUrl(rs.getBytes("photo_url"));
-                 result.setCreatedAt(rs.getDate("created_at"));
+                 result.setCreatedAt(rs.getTimestamp("created_at"));
                  result.setImageType(rs.getString("image_Type"));
                 result.setImageName(rs.getString("image_Name"));
                  result.setUserId(rs.getInt("user_Id"));
@@ -279,7 +307,7 @@ public class DbConnector {
                 result.setCreditcardnumber(rs.getString(7));
                 result.setPostalcode(rs.getString(8));
                 result.setPhonenumber(rs.getString(9));
-                result.setCreatedAt(rs.getDate(10));
+                result.setCreatedAt(rs.getTimestamp(10));
                 result.setCardVerification(rs.getString(11));
                 result.setProductName(rs.getString(12));
                 result.setProductDescription(rs.getString(13));
@@ -463,7 +491,7 @@ public class DbConnector {
                 es[i].setDescription(rs.getString("description"));
                 es[i].setPrice(rs.getString("price"));
                 es[i].setPhotoUrl(null);
-                es[i].setCreatedAt(rs.getDate("created_At"));
+                es[i].setCreatedAt(rs.getTimestamp("created_At"));
                 es[i].setImageType(rs.getString("image_Type"));
                 es[i].setImageName(rs.getString("image_Name"));
                 es[i].setUserId(rs.getInt("user_Id"));
