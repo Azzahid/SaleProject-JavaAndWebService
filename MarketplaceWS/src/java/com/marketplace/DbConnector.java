@@ -214,7 +214,7 @@ public class DbConnector {
                 es[i].setPurchaseId(rs.getInt("purchase_id"));
                 es[i].setBuyerId(rs.getInt("buyer_id"));
                 es[i].setProductId(rs.getInt("product_id"));
-                es[i].setConsignee("consignee");
+                es[i].setConsignee(rs.getString("consignee"));
                 es[i].setFulladdress(rs.getString("fulladdress"));
                 es[i].setQuantity(rs.getInt(6));
                 es[i].setCreditcardnumber(rs.getString(7));

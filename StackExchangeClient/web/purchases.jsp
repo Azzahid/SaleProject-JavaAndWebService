@@ -29,7 +29,7 @@
                 java.lang.String cardVerification = request.getParameter("card_verification");
                 // TODO process result here
                 java.lang.Boolean result = port.confirmPurchase(buyerId, productId, consignee, fulladdress, quantity, creditcardnumber, postalcode, phonenumber, cardVerification);
-                out.println("Result = "+result);
+//                out.println("Result = "+result);
              } catch (Exception ex) {
                 out.println("ex = "+ex);
              }

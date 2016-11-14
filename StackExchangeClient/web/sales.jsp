@@ -30,7 +30,6 @@
         <!-- search form -->
         <!--BagianProduk rencananya pake PHP di echo satu-satu-->
         <div id = "sales">
-    <%-- start web service invocation --%><hr/>
     <%
         String url = "http://localhost:8082/IdentityServices/TokenServlet";
         URL iurl = new URL(url);
@@ -129,7 +128,6 @@
         out.println("Error:"+ex);
     }
     %>
-    <%-- end web service invocation --%><hr/>
 
         </div>
         <script type="text/javascript" src="js/catalog.js"></script>
