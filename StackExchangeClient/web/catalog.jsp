@@ -1,3 +1,5 @@
+<%@page import="java.net.HttpURLConnection"%>
+<%@page import="java.net.URL"%>
 <%@page import="java.util.Locale"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Date"%>
@@ -49,6 +51,48 @@
             // TODO process result here
             java.util.List<com.marketplace.Product> result = null;
             
+            String url = "http://localhost:8082/IdentityServices/TokenServlet";
+            URL iurl = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection)iurl.openConnection();
+            connection.setDoOutput(true);
+            connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            // Send POST output.
+            connection.setRequestMethod("POST");
+            java.io.DataOutputStream printout = new java.io.DataOutputStream(connection.getOutputStream ());
+            String token = (String)session.getAttribute("token");
+            out.println(token);
+            String content = "token=" + token;
+            printout.writeBytes (content);
+            printout.flush (); 
+            printout.close ();  
+
+            // retrieve response from IS
+            java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(
+                (java.io.InputStream) connection.getContent()));
+            String line;
+
+            String error = "";
+            int user_id = 0;
+            String username = "";
+            String consignee = "";
+            String address = "";
+            String postalcode = "";
+            String phonenumber = "";
+            int product_id = 0;
+            if(connection.getResponseMessage().contains("invalid")) {
+                error = connection.getResponseMessage();
+                username = "error";
+            }
+            else {
+                username = connection.getHeaderField("username");
+                consignee = connection.getHeaderField("fullname");
+                address = connection.getHeaderField("address");
+                postalcode = connection.getHeaderField("postalcode");
+                phonenumber = connection.getHeaderField("phonenumber");
+                user_id = Integer.parseInt(connection.getHeaderField("user_id"));
+            }
+            
             if(request.getParameter("search")!=null){
                 result = port.searchProduct(request.getParameter("search"), Integer.parseInt(request.getParameter("option")));
             }else{
@@ -61,7 +105,7 @@
                     Product temp = result.get(i);
                     Date datetemp = temp.getCreatedAt().toGregorianCalendar().getTime();
                     int totallike = port.getLike(temp.getPId());
-                    int status = port.getLikeStatus(temp.getPId(), 7);
+                    int status = port.getLikeStatus(temp.getPId(), user_id);
                     int totalpurchase = port.getTotalPurchase(temp.getPId());
                     out.print("<div class = 'product'>");
                             out.print("<div>"
@@ -81,14 +125,14 @@
                                     +   "<div class='product-desc'>"+totalpurchase+" purchases</div>"
                                     + "</div>"
                                     + "<div class = 'margin-top'>"
-                                    + "<button class = '");
-                            if(status == 0){
+                                    + "<a class= '");
+                            if(status != 1){
                                     out.print("color-blue");
                             }else{
                                     out.print("red");
                             }  
-                            out.print(" like font-bold' id ='"+temp.getPId().toString()+"' >");//onclick = 'like(this.id,"+")'>");
-                            if(status == 0){
+                            out.print(" like font-bold'  href ='/StackExchangeClient/TestServ?productid="+temp.getPId()+"&userid="+user_id+"'>");//onclick = 'like(this.id,"+")'>");
+                            if(status != 1){
                                     out.print("LIKE");
                             }else{
                                     out.print("LIKED");

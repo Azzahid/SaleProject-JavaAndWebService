@@ -29,7 +29,7 @@ public class DbConnector {
         try{
             Class.forName("com.mysql.jdbc.Driver");
             
-            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "ladrangotoma");
+            con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/t2_product", "root", "");
             st = (Statement) con.createStatement();
         }catch(ClassNotFoundException | SQLException ex){
             System.out.println("Error "+ ex);
@@ -100,18 +100,17 @@ public class DbConnector {
         return es;
     }
     
-    public Integer getLikeStatus(int id, int productid){
-        Integer result = null;
-            
+    public Integer getLikeStatus(int barangid, int userid){
+        Integer result = -999;
             try{
                 String query;
                 int i = 0;
-                query = ("SELECT COUNT(*) AS total FROM user_like WHERE user_id = '"+id+"' AND barang_id = '"+productid+"'");
+                query = ("SELECT * FROM user_like WHERE user_id = '"+userid+"' AND barang_id = '"+barangid+"';");
                 rs = st.executeQuery(query);
                 if(rs.next()){
-                    result = rs.getInt("total");
+                    result = rs.getInt("status");
                 }else{
-                    return null;
+                    result =  -999;
                 }
             }catch(Exception ex){
                 System.out.println("Result : "+ex);
@@ -369,8 +368,8 @@ public class DbConnector {
         return true;
     }
     
-    public int changeLikeStatus(int barangid, int status,int userid){
-        int result = 0;
+    public Boolean changeLikeStatus(int barangid, int status,int userid){
+        Boolean result = false;
         String query1;
         if(status == 0){
             query1 = "UPDATE user_like SET status = 1 WHERE user_id = '"+userid+"'AND barang_id='"+barangid+"'";
@@ -379,11 +378,7 @@ public class DbConnector {
         }
         try{
             int k = st.executeUpdate(query1);
-            if (k>0) {
-               result = 1;
-            }else{
-               result = 0;
-            }
+            result = k>0;
         } catch( Exception ex ) {
           System.out.println("Error : " + ex);
         }
@@ -391,17 +386,13 @@ public class DbConnector {
         return result;
     }
     
-    public int InsertLikeUser(int barangid, int userid){
-        int result = 0;
+    public Boolean InsertLikeUser(int barangid, int userid){
+        Boolean result = false;
         String query1;
         query1 = "INSERT INTO user_like (user_id, barang_id, status) VALUES ('"+userid+"','"+barangid+"',1)";
         try{
             int k = st.executeUpdate(query1);
-            if (k>0) {
-               result = 1;
-            }else{
-               result = 0;
-            }
+            result = k>0;
         } catch( Exception ex ) {
           System.out.println("Error : " + ex);
         }

@@ -5,6 +5,9 @@
  */
 package com.marketplace;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -61,7 +64,7 @@ public class marketplace {
     public Integer getLikeStatus(@WebParam(name = "productid") int productid, @WebParam(name = "userid") int userid) {
         Integer result = null;
         DbConnector con = new DbConnector();
-        result = con.getLikeStatus(userid, productid);
+        result = con.getLikeStatus(productid, userid);
         con.close();
         return result;
     }
@@ -154,15 +157,21 @@ public class marketplace {
             ) {
         //TODO write your implementation code here:
         DbConnector con = new DbConnector();
-        return con.confirmPurchase(buyer_id, 
-            product_id, 
-            consignee,
-            fulladdress, 
-            quantity, 
-            creditcardnumber, 
-            postalcode,
-            phonenumber, 
-            card_verification);
+        Boolean x = false;
+        try {
+            x = con.confirmPurchase(buyer_id,
+                    product_id,
+                    consignee,
+                    fulladdress,
+                    quantity,
+                    creditcardnumber,
+                    postalcode,
+                    phonenumber,
+                    card_verification);
+        } catch (SQLException ex) {
+            Logger.getLogger(marketplace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return x;
     }
 
     /**
@@ -180,10 +189,14 @@ public class marketplace {
      * Web service operation
      */
     @WebMethod(operationName = "insertLike")
-    public Integer insertLike(@WebParam(name = "barangid") int barangid, @WebParam(name = "userid") int userid) {
-       Integer result = 0;
+    public Boolean insertLike(@WebParam(name = "barangid") int barangid, @WebParam(name = "userid") int userid) {
+       Boolean result = false;
        DbConnector con = new DbConnector();
-       result = con.InsertLikeUser(barangid, userid);
+       try{
+            result = con.InsertLikeUser(barangid, userid);
+       }catch(Exception Ex){
+            result = false;
+       }
        return result;
     }
 
@@ -191,11 +204,16 @@ public class marketplace {
      * Web service operation
      */
     @WebMethod(operationName = "changeLikeStatus")
-    public Integer changeLikeStatus(@WebParam(name = "barangid") int barangid, @WebParam(name = "userid") int userid) {
-        Integer result = 0;
+    public Boolean changeLikeStatus(@WebParam(name = "barangid") int barangid, @WebParam(name = "userid") int userid) {
+        Boolean result = false;
         DbConnector con = new DbConnector();
-        int x = con.getLikeStatus(userid, barangid);
-        result = con.changeLikeStatus(barangid, x, userid);
+        try{
+            int x = con.getLikeStatus(barangid, userid);
+            result = con.changeLikeStatus(barangid, x, userid);
+        }catch(Exception ex){
+            result = false;
+            System.out.println("Error : "+ex);
+        }
         return result;
     }
     
