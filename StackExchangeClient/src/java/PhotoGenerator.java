@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.WebServiceRef;
-import com.marketplace.*;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -80,7 +79,7 @@ public class PhotoGenerator extends HttpServlet {
             input.close();
             output.flush();
         } catch (SerialException ex) {
-            Logger.getLogger(PhotoGenerator.class.getName()).log(Level.SEVERE, null, ex);
+            response.getWriter().write("Error : "+ ex);
         }
         
     }
